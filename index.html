@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>WikipediaBon</title>
+<meta name="description" content="WikipediaBon — энциклопедия персонажей MrBon">
+<link rel="icon" href="images/mrbon-icon.png">
+<style>
+:root{--bg:#0d1020;--card:#171b30;--ink:#f3efe8;--mut:#9aa0bd;--brown:#8a5f3e;--blue:#2d4b94}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5;min-height:100vh}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+:focus-visible{outline:3px solid #ffc83d;outline-offset:2px}
+.adm{display:none!important}
+body.admin .adm{display:inline-flex!important}
+body.guest .gst{display:inline-flex}
+body.admin .gst{display:none}
+.top{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;justify-content:flex-end;gap:8px;padding:calc(10px + env(safe-area-inset-top)) 14px 10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 16px;border-radius:999px;background:#ffffff14;border:1px solid #ffffff26;backdrop-filter:blur(10px);font-weight:600;font-size:14px;transition:.2s}
+.btn:hover{background:#ffffff26}
+.btn.pri{background:linear-gradient(135deg,#a8723f,#e0a15a);color:#1a0f05;border:0}
+.btn.red{background:#c0344d;border:0}
+.btn:disabled{opacity:.5;cursor:wait}
+.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:90px 18px 60px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#2a3a78 0,transparent 60%),radial-gradient(ellipse at 20% 90%,#5a3a22 0,transparent 55%),var(--bg)}
+.hero img.wm{width:min(94vw,920px);height:auto;filter:drop-shadow(0 0 28px #ffffff30) drop-shadow(0 10px 30px #0008);animation:pop 1.4s cubic-bezier(.2,.9,.3,1.2) both}
+.hero p{margin-top:22px;color:var(--mut);font-size:clamp(15px,2.4vw,19px);animation:fade 1.2s .9s both}
+.down{margin-top:34px;animation:fade 1s 1.4s both}
+.down a{display:block;width:46px;height:46px;border-radius:50%;border:2px solid #ffffff55;color:#fff;text-decoration:none;font-size:22px;line-height:42px;animation:bob 1.8s 2.4s infinite}
+@keyframes pop{from{opacity:0;transform:scale(.6) translateY(30px);filter:blur(12px)}}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}}
+@keyframes bob{50%{transform:translateY(8px)}}
+main{max-width:1180px;margin:0 auto;padding:70px 16px 40px}
+h2{font-size:clamp(26px,5vw,40px);margin-bottom:6px}
+.sub{color:var(--mut);margin-bottom:28px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px}
+@media(max-width:520px){.grid{grid-template-columns:repeat(2,1fr);gap:12px}}
+.card{position:relative;border-radius:20px;padding:3px;background:var(--c,#667);box-shadow:0 0 22px var(--g,transparent);opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}
+.card.show{opacity:1;transform:none}
+.card:hover{transform:translateY(-4px)}
+.in{background:var(--card);border-radius:17px;overflow:hidden;height:100%;cursor:pointer}
+.ph{aspect-ratio:1;background:#0c0f1d;overflow:hidden}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.meta{padding:12px 14px 14px}
+.nm{font-weight:800;font-size:17px;overflow-wrap:anywhere}
+.rb{display:inline-block;margin-top:6px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:800;background:var(--c);color:#10101a}
+.kebab{position:absolute;top:10px;right:10px;z-index:5;width:36px;height:36px;border-radius:50%;background:#000a;color:#fff;font-size:20px;line-height:1;justify-content:center;align-items:center}
+.menu{position:absolute;top:50px;right:10px;z-index:9;background:#10142a;border:1px solid #ffffff30;border-radius:14px;padding:6px;min-width:170px;box-shadow:0 14px 40px #000a}
+.menu button{display:block;width:100%;text-align:left;padding:10px 12px;border-radius:9px;font-weight:600;font-size:14px}
+.menu button:hover{background:#ffffff1c}
+.menu .d{color:#ff7a90}
+.r-rare{--c:#4aa3ff;--g:#4aa3ff40}
+.r-super-rare{--c:#3ddc84;--g:#3ddc8450}
+.r-epic{--c:#b45cff;--g:#b45cff60}
+.r-mythic{--c:#ff4d6d;--g:#ff4d6d66}
+.r-legendary{--c:#ffc83d;--g:#ffc83d80}
+.r-bonmax{--c:linear-gradient(90deg,#f33,#fa0,#ee2,#3d5,#2cf,#74f,#f4c,#f33);--g:#fff3}
+.r-bonmax{background:linear-gradient(90deg,#f33,#fa0,#ee2,#3d5,#2cf,#74f,#f4c,#f33);background-size:300% 100%;animation:rb 3s linear infinite,glow 3s linear infinite}
+.r-bonmax .rb{background-size:300% 100%;animation:rb 3s linear infinite;color:#111}
+.r-bonmax .in{background:linear-gradient(160deg,#1c1830,#171b30)}
+.r-bonmax .nm{background:linear-gradient(90deg,#f66,#fb3,#6e6,#4cf,#a8f,#f6c,#f66);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:rb 3s linear infinite}
+@keyframes rb{to{background-position:300% 0}}
+@keyframes glow{0%,100%{box-shadow:0 0 26px #f33a}33%{box-shadow:0 0 26px #3d5a}66%{box-shadow:0 0 26px #74fa}}
+.r-secret{--c:#d8d8d8;--g:#ffffff30;animation:flick 2.6s steps(1) infinite}
+.r-secret .in{background:#0b0b0b;filter:grayscale(1)}
+.r-secret .ph img{filter:grayscale(1) contrast(1.25)}
+.r-secret .rb{background:#fff;color:#000}
+@keyframes flick{0%,100%{box-shadow:0 0 22px #fff5}46%{box-shadow:0 0 6px #fff2}48%{box-shadow:0 0 30px #fff9}50%{box-shadow:0 0 4px #0008}}
+.r-bonultra{--c:#fff;--g:#ff3b3b;background:conic-gradient(from var(--a,0deg),#000,#ff2e2e,#fff,#7a1bff,#000);animation:spin 3s linear infinite,pulse 2s ease-in-out infinite}
+@property --a{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes spin{to{--a:360deg}}
+@keyframes pulse{50%{box-shadow:0 0 40px #ff2e2ecc,0 0 70px #7a1bff88}}
+.r-bonultra{box-shadow:0 0 28px #ff2e2e99}
+.r-bonultra .in{background:linear-gradient(160deg,#070710,#1a0a1e)}
+.r-bonultra .rb{background:linear-gradient(90deg,#ff2e2e,#fff,#9b4dff);color:#000}
+.empty{grid-column:1/-1;text-align:center;color:var(--mut);padding:50px 10px;border:2px dashed #ffffff30;border-radius:20px}
+.ov{position:fixed;inset:0;z-index:60;background:#000b;display:flex;align-items:center;justify-content:center;padding:14px;animation:fade .25s}
+.ov[hidden]{display:none}
+.box{background:#12162b;border:1px solid #ffffff2a;border-radius:22px;width:min(520px,100%);max-height:92svh;overflow:auto;padding:22px}
+.box h3{font-size:22px;margin-bottom:14px}
+label{display:block;font-weight:700;font-size:14px;margin:12px 0 5px}
+input,textarea,select{width:100%;padding:12px;border-radius:12px;border:1px solid #ffffff30;background:#0b0e1c;color:#fff;font:inherit}
+textarea{min-height:110px;resize:vertical}
+.row{display:flex;gap:10px;margin-top:20px;justify-content:flex-end;flex-wrap:wrap}
+.pv{margin-top:10px;max-height:200px;border-radius:12px;display:none}
+.det img{width:100%;border-radius:14px;max-height:50svh;object-fit:contain;background:#0b0e1c}
+.det p{margin-top:12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.tr{display:flex;gap:12px;align-items:center;padding:10px;border:1px solid #ffffff22;border-radius:14px;margin-bottom:10px;flex-wrap:wrap}
+.tr img{width:64px;height:64px;border-radius:10px;object-fit:cover}
+.tr b{flex:1;min-width:100px;overflow-wrap:anywhere}
+.warn{background:#4a2a10;border:1px solid #ffc83d;border-radius:14px;padding:14px;margin-bottom:24px;font-size:14px}
+footer{text-align:center;padding:50px 16px calc(40px + env(safe-area-inset-bottom));border-top:1px solid #ffffff1a;margin-top:50px}
+footer a{display:inline-block}
+footer img{width:84px;height:auto;transition:transform .3s}
+footer a:hover img{transform:rotate(-8deg) scale(1.1)}
+footer p{margin-top:10px;color:var(--mut);font-size:14px}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#fff;color:#111;padding:12px 18px;border-radius:999px;font-weight:700;z-index:99;max-width:92vw;text-align:center;transition:.3s;opacity:0;pointer-events:none}
+#toast.on{opacity:1}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.card{opacity:1;transform:none}}
+</style>
+</head>
+<body class="guest">
+<!--
+=====================================================================
+  WikipediaBon — один файл index.html (HTML + CSS + JS)
+  НАСТРОЙКА FIREBASE — см. блоки "ШАГ 1" и "ШАГ 2" ниже в <script>.
+
+  ПРАВИЛА БЕЗОПАСНОСТИ (вставьте в консоль Firebase, замените ВАШ_UID):
+
+  --- Firestore Database -> Rules ---
+  rules_version = '2';
+  service cloud.firestore { match /databases/{db}/documents {
+    function admin(){ return request.auth != null && request.auth.uid == 'ВАШ_UID'; }
+    function ok(){ return request.resource.data.rarity != 'BonULTRA'
+        || request.resource.data.name.lower() in ['smbb','mrbon void']; }
+    match /characters/{id}{ allow read: if true;
+      allow create, update: if admin() && ok(); allow delete: if admin(); }
+    match /trash/{id}{ allow read, delete: if admin();
+      allow create, update: if admin() && ok(); }
+  }}
+
+  --- Storage -> Rules ---
+  rules_version = '2';
+  service firebase.storage { match /b/{bucket}/o {
+    match /characters/{file=**}{ allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == 'ВАШ_UID'
+        && request.resource != null && request.resource.size < 5*1024*1024
+        && request.resource.contentType.matches('image/.*');
+      allow delete: if request.auth != null && request.auth.uid == 'ВАШ_UID'; }
+  }}
+=====================================================================
+-->
+<div class="top">
+  <button class="btn gst" id="bLogin">🔒 Admin</button>
+  <button class="btn pri adm" id="bUpload">+ Upload MrBon</button>
+  <button class="btn adm" id="bTrash">🗑 Trash <span id="tCount"></span></button>
+  <button class="btn adm" id="bOut">Выйти</button>
+</div>
+
+<section class="hero">
+  <img class="wm" alt="WikipediaBon" src="images/wikipediabon-logo.png">
+  <p>Энциклопедия персонажей MrBon</p>
+  <div class="down"><a href="#gallery" aria-label="Вниз к персонажам">↓</a></div>
+</section>
+
+<main id="gallery">
+  <h2>Персонажи</h2>
+  <p class="sub">Нажмите на карточку, чтобы прочитать описание.</p>
+  <div id="warn"></div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>
+  <a href="https://mrbonstudiox.github.io/MrBon.StudioX/" aria-label="MrBon Studio X"><img alt="MrBon Studio X" src="images/mrbon-icon.png"></a>
+  <p>Created by MrBon Studio X.</p>
+</footer>
+
+<div class="ov" id="ovDet" hidden><div class="box det" id="det"></div></div>
+
+<div class="ov" id="ovForm" hidden><div class="box">
+  <h3 id="fTitle">Upload MrBon</h3>
+  <label for="fFile">Add Photo</label>
+  <input type="file" id="fFile" accept="image/*">
+  <img class="pv" id="fPv" alt="">
+  <label for="fName">Name MrBon</label>
+  <input id="fName" maxlength="60" autocomplete="off">
+  <label for="fDesc">Description</label>
+  <textarea id="fDesc" maxlength="1500"></textarea>
+  <label for="fRar">Rarity</label>
+  <select id="fRar"></select>
+  <div class="row"><button class="btn" id="fCancel">Cancel</button><button class="btn pri" id="fOk">Upload</button></div>
+</div></div>
+
+<div class="ov" id="ovLogin" hidden><div class="box">
+  <h3>Вход администратора</h3>
+  <label for="lMail">Email</label><input id="lMail" type="email" autocomplete="username">
+  <label for="lPass">Пароль</label><input id="lPass" type="password" autocomplete="current-password">
+  <div class="row"><button class="btn" id="lCancel">Cancel</button><button class="btn pri" id="lOk">Войти</button></div>
+</div></div>
+
+<div class="ov" id="ovTrash" hidden><div class="box">
+  <h3>Trash</h3>
+  <p class="sub" style="margin-bottom:14px">Удалённые персонажи хранятся бессрочно, пока вы сами не удалите их навсегда.</p>
+  <div id="trList"></div>
+  <div class="row"><button class="btn" id="trClose">Закрыть</button></div>
+</div></div>
+
+<div id="toast" role="status"></div>
+
+<script type="module">
+/* ============ ШАГ 1. ВСТАВЬТЕ ДАННЫЕ ВАШЕГО FIREBASE-ПРОЕКТА ============
+   Firebase Console → ⚙ Project settings → General → Your apps → Web app (</>) → firebaseConfig.
+   Замените каждое значение "ВСТАВЬТЕ_..." своим. */
+const firebaseConfig = {
+  apiKey: "ВСТАВЬТЕ_apiKey",
+  authDomain: "ВСТАВЬТЕ_authDomain",
+  projectId: "ВСТАВЬТЕ_projectId",
+  storageBucket: "ВСТАВЬТЕ_storageBucket",
+  messagingSenderId: "ВСТАВЬТЕ_messagingSenderId",
+  appId: "ВСТАВЬТЕ_appId"
+};
+/* ============ ШАГ 2. ВСТАВЬТЕ ВАШ UID АДМИНИСТРАТОРА ============
+   Firebase Console → Authentication → Users → колонка "User UID".
+   Здесь он нужен ТОЛЬКО чтобы показать вам кнопки управления.
+   Настоящая защита — в Security Rules (см. комментарий вверху файла). */
+const ADMIN_UID = "ВСТАВЬТЕ_ВАШ_UID";
+/* ================================================================ */
+
+const V="10.12.2",G="https://www.gstatic.com/firebasejs/"+V+"/";
+const RAR=["Rare","Super Rare","Epic","Mythic","Legendary","BonMax","Secret","BonULTRA"];
+const ULTRA=["smbb","mrbon void"];
+const $=id=>document.getElementById(id);
+const slug=r=>"r-"+r.toLowerCase().replace(/\s+/g,"-");
+const okUltra=n=>ULTRA.includes(n.trim().toLowerCase());
+const configured=!firebaseConfig.apiKey.startsWith("ВСТАВЬТЕ");
+let items=[],trash=[],isAdmin=false,editing=null,fb={},unsubTrash=null;
+
+function toast(t){const e=$("toast");e.textContent=t;e.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("on"),3200)}
+const show=id=>$(id).hidden=false, hide=id=>$(id).hidden=true;
+document.querySelectorAll(".ov").forEach(o=>o.addEventListener("click",e=>{if(e.target===o)o.hidden=true}));
+addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".ov").forEach(o=>o.hidden=true)});
+
+const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add("show");io.unobserve(x.target)}}),{threshold:.08});
+
+function render(){
+  const g=$("grid");g.innerHTML="";
+  if(!items.length){g.innerHTML='<div class="empty">'+(configured?"Пока здесь нет персонажей.":"Каталог появится после подключения Firebase.")+'</div>';return}
+  items.forEach((c,i)=>{
+    const d=document.createElement("div");d.className="card "+slug(c.rarity);
+    const inn=document.createElement("div");inn.className="in";
+    const ph=document.createElement("div");ph.className="ph";
+    const im=document.createElement("img");im.src=c.photoURL;im.alt=c.name;im.loading="lazy";ph.appendChild(im);
+    const m=document.createElement("div");m.className="meta";
+    const n=document.createElement("div");n.className="nm";n.textContent=c.name;
+    const r=document.createElement("span");r.className="rb";r.textContent=c.rarity;
+    m.append(n,r);inn.append(ph,m);inn.onclick=()=>detail(c);
+    const k=document.createElement("button");k.className="kebab adm";k.textContent="⋮";k.setAttribute("aria-label","Меню");
+    k.onclick=e=>{e.stopPropagation();menu(d,c,i)};
+    d.append(inn,k);g.appendChild(d);io.observe(d);
+  });
+}
+function detail(c){
+  const b=$("det");b.innerHTML="";
+  const im=document.createElement("img");im.src=c.photoURL;im.alt=c.name;
+  const h=document.createElement("h3");h.textContent=c.name;h.style.margin="14px 0 6px";
+  const r=document.createElement("span");r.className="rb "+slug(c.rarity);r.textContent=c.rarity;
+  const p=document.createElement("p");p.textContent=c.description||"";
+  const x=document.createElement("div");x.className="row";x.innerHTML='<button class="btn">Закрыть</button>';x.firstChild.onclick=()=>hide("ovDet");
+  b.append(im,h,r,p,x);show("ovDet");
+}
+function menu(card,c,i){
+  document.querySelectorAll(".menu").forEach(m=>m.remove());
+  const m=document.createElement("div");m.className="menu";
+  [["EDIT",()=>openForm(c)],["REPLACE ▲ выше",()=>move(i,-1)],["REPLACE ▼ ниже",()=>move(i,1)],["DELETE",()=>del(c),"d"]].forEach(([t,f,cl])=>{
+    const b=document.createElement("button");b.textContent=t;if(cl)b.className=cl;b.onclick=e=>{e.stopPropagation();m.remove();f()};m.appendChild(b)});
+  card.appendChild(m);
+}
+document.addEventListener("click",e=>{if(!e.target.closest(".menu"))document.querySelectorAll(".menu").forEach(m=>m.remove())});
+
+/* ---------- форма ---------- */
+function fillRar(){
+  const n=$("fName").value,cur=$("fRar").value;
+  $("fRar").innerHTML=RAR.map(r=>`<option value="${r}"${r==="BonULTRA"&&!okUltra(n)?" disabled":""}>${r}${r==="BonULTRA"&&!okUltra(n)?" (только SMBB и MrBon Void)":""}</option>`).join("");
+  $("fRar").value=[...$("fRar").options].find(o=>o.value===cur&&!o.disabled)?cur:"Rare";
+}
+$("fName").addEventListener("input",fillRar);
+$("fFile").addEventListener("change",()=>{const f=$("fFile").files[0],p=$("fPv");if(f){p.src=URL.createObjectURL(f);p.style.display="block"}});
+function openForm(c){
+  editing=c||null;
+  $("fTitle").textContent=c?"Edit MrBon":"Upload MrBon";$("fOk").textContent=c?"Save":"Upload";
+  $("fFile").value="";$("fName").value=c?c.name:"";$("fDesc").value=c?c.description:"";
+  const p=$("fPv");p.style.display=c?"block":"none";p.src=c?c.photoURL:"";
+  fillRar();if(c)$("fRar").value=c.rarity;show("ovForm");
+}
+$("bUpload").onclick=()=>openForm();
+$("fCancel").onclick=()=>hide("ovForm");
+
+function compress(file){return new Promise((res,rej)=>{
+  const im=new Image();im.onload=()=>{const s=Math.min(1,1200/Math.max(im.width,im.height)),c=document.createElement("canvas");
+    c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);
+    c.toBlob(b=>b?res(b):rej(new Error("Не удалось обработать фото")),"image/webp",.88)};
+  im.onerror=()=>rej(new Error("Файл не является изображением"));im.src=URL.createObjectURL(file)})}
+async function upPhoto(file){
+  const blob=await compress(file),ext=blob.type==="image/webp"?"webp":"png";
+  const path="characters/"+Date.now()+"-"+Math.random().toString(36).slice(2,8)+"."+ext;
+  const r=fb.ref(fb.st,path);await fb.uploadBytes(r,blob,{contentType:blob.type});
+  return{photoURL:await fb.getDownloadURL(r),photoPath:path};
+}
+const maxOrder=()=>items.reduce((m,c)=>Math.max(m,c.order||0),0);
+$("fOk").onclick=async()=>{
+  const name=$("fName").value.trim(),description=$("fDesc").value.trim(),rarity=$("fRar").value,file=$("fFile").files[0];
+  if(!name)return toast("Введите имя");
+  if(!editing&&!file)return toast("Добавьте фото");
+  if(rarity==="BonULTRA"&&!okUltra(name))return toast("BonULTRA — только для SMBB и MrBon Void");
+  $("fOk").disabled=true;
+  try{
+    if(editing){
+      const data={name,description,rarity};
+      if(file){const u=await upPhoto(file);Object.assign(data,u);
+        if(editing.photoPath)fb.deleteObject(fb.ref(fb.st,editing.photoPath)).catch(()=>{})}
+      await fb.updateDoc(fb.doc(fb.db,"characters",editing.id),data);toast("Сохранено");
+    }else{
+      const u=await upPhoto(file);
+      await fb.addDoc(fb.collection(fb.db,"characters"),{name,description,rarity,...u,order:maxOrder()+1});toast("Опубликовано");
+    }
+    hide("ovForm");
+  }catch(e){console.error(e);toast("Ошибка: "+(e.code==="permission-denied"||e.code==="storage/unauthorized"?"нет прав администратора":e.message))}
+  $("fOk").disabled=false;
+};
+
+/* ---------- перемещение / корзина ---------- */
+async function move(i,d){
+  const j=i+d;if(j<0||j>=items.length)return toast(d<0?"Уже первый":"Уже последний");
+  const a=items[i],b=items[j],bt=fb.writeBatch(fb.db);
+  bt.update(fb.doc(fb.db,"characters",a.id),{order:b.order});bt.update(fb.doc(fb.db,"characters",b.id),{order:a.order});
+  try{await bt.commit()}catch(e){toast("Ошибка: нет прав или сети")}
+}
+const strip=c=>{const{id,...r}=c;return r};
+async function del(c){
+  if(!confirm("Отправить «"+c.name+"» в корзину?"))return;
+  const bt=fb.writeBatch(fb.db);
+  bt.set(fb.doc(fb.db,"trash",c.id),{...strip(c),deletedAt:Date.now()});bt.delete(fb.doc(fb.db,"characters",c.id));
+  try{await bt.commit();toast("Перемещено в Trash")}catch(e){toast("Ошибка: нет прав или сети")}
+}
+function renderTrash(){
+  $("tCount").textContent=trash.length?"("+trash.length+")":"";
+  const l=$("trList");l.innerHTML=trash.length?"":'<div class="empty">Корзина пуста</div>';
+  trash.forEach(c=>{
+    const r=document.createElement("div");r.className="tr";
+    const im=document.createElement("img");im.src=c.photoURL;im.alt="";
+    const n=document.createElement("b");n.textContent=c.name+" · "+c.rarity;
+    const a=document.createElement("button");a.className="btn pri";a.textContent="Restore";
+    a.onclick=async()=>{const bt=fb.writeBatch(fb.db);const{deletedAt,...rest}=strip(c);
+      bt.set(fb.doc(fb.db,"characters",c.id),{...rest,order:maxOrder()+1});bt.delete(fb.doc(fb.db,"trash",c.id));
+      try{await bt.commit();toast("Восстановлено")}catch(e){toast("Ошибка")}};
+    const b=document.createElement("button");b.className="btn red";b.textContent="Delete forever";
+    b.onclick=async()=>{if(!confirm("Удалить «"+c.name+"» навсегда? Это нельзя отменить."))return;
+      try{if(c.photoPath)await fb.deleteObject(fb.ref(fb.st,c.photoPath)).catch(()=>{});await fb.deleteDoc(fb.doc(fb.db,"trash",c.id));toast("Удалено навсегда")}catch(e){toast("Ошибка")}};
+    r.append(im,n,a,b);l.appendChild(r);
+  });
+}
+$("bTrash").onclick=()=>{renderTrash();show("ovTrash")};
+$("trClose").onclick=()=>hide("ovTrash");
+
+/* ---------- вход ---------- */
+$("bLogin").onclick=()=>configured?show("ovLogin"):toast("Сначала настройте Firebase");
+$("lCancel").onclick=()=>hide("ovLogin");
+$("bOut").onclick=()=>fb.signOut(fb.auth);
+$("lOk").onclick=async()=>{
+  try{await fb.signInWithEmailAndPassword(fb.auth,$("lMail").value.trim(),$("lPass").value);$("lPass").value="";hide("ovLogin")}
+  catch(e){toast("Неверный email или пароль")}
+};
+
+/* ---------- запуск ---------- */
+async function start(){
+  if(!configured){
+    $("warn").innerHTML='<div class="warn"><b>Firebase ещё не подключён.</b> Откройте index.html и вставьте данные проекта в «ШАГ 1» и ваш UID в «ШАГ 2».</div>';
+    render();return}
+  try{
+    const[A,Au,F,S]=await Promise.all([import(G+"firebase-app.js"),import(G+"firebase-auth.js"),import(G+"firebase-firestore.js"),import(G+"firebase-storage.js")]);
+    const app=A.initializeApp(firebaseConfig);
+    fb={auth:Au.getAuth(app),db:F.getFirestore(app),st:S.getStorage(app),signOut:Au.signOut,signInWithEmailAndPassword:Au.signInWithEmailAndPassword,
+      collection:F.collection,doc:F.doc,addDoc:F.addDoc,updateDoc:F.updateDoc,deleteDoc:F.deleteDoc,writeBatch:F.writeBatch,
+      ref:S.ref,uploadBytes:S.uploadBytes,getDownloadURL:S.getDownloadURL,deleteObject:S.deleteObject};
+    F.onSnapshot(F.query(F.collection(fb.db,"characters"),F.orderBy("order")),s=>{
+      items=s.docs.map(d=>({id:d.id,...d.data()}));render()},e=>{console.error(e);$("warn").innerHTML='<div class="warn">Не удалось загрузить персонажей. Проверьте настройки Firebase и правила.</div>'});
+    Au.onAuthStateChanged(fb.auth,u=>{
+      isAdmin=!!u&&u.uid===ADMIN_UID;
+      document.body.classList.toggle("admin",isAdmin);document.body.classList.toggle("guest",!isAdmin);
+      if(unsubTrash){unsubTrash();unsubTrash=null}trash=[];renderTrash();
+      if(isAdmin)unsubTrash=F.onSnapshot(F.collection(fb.db,"trash"),s=>{trash=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.deletedAt||0)-(a.deletedAt||0));renderTrash()},()=>{});
+      else if(u)toast("Этот аккаунт не является администратором");
+    });
+  }catch(e){console.error(e);$("warn").innerHTML='<div class="warn">Ошибка подключения к Firebase. Проверьте интернет и firebaseConfig.</div>';render()}
+}
+render();start();
+</script>
+</body>
+</html>
