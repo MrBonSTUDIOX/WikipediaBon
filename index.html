@@ -49,61 +49,72 @@ input{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,2
 .t-developer{background:linear-gradient(90deg,#8a8a8a,#fff,#8a8a8a)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px}
 @media(max-width:520px){.grid{grid-template-columns:repeat(2,1fr);gap:12px}}
-/* ===== cards: borders animate with transform only (GPU, no repaint) ===== */
-.card{position:relative;isolation:isolate;overflow:hidden;border-radius:20px;padding:3px;background:var(--c,#667);box-shadow:0 0 22px var(--g,transparent);opacity:0;transform:translateY(24px);transition:opacity .5s,transform .5s}
+/* ===== cards: effects use only transform/opacity (GPU, no repaint); off-screen cards run nothing ===== */
+.card{position:relative;isolation:isolate;border-radius:20px;padding:3px;opacity:0;transform:translateY(24px);transition:opacity .5s,transform .5s}
 .card.show{opacity:1;transform:none}
 .card.show:hover{transform:translateY(-4px)}
-.card::before{content:none}
-.card:not(.vis)::before{animation:none!important}
+.ring{position:absolute;inset:0;border-radius:20px;overflow:hidden;z-index:-1;background:var(--c,#667)}
+.card::after{content:"";position:absolute;inset:0;border-radius:20px;z-index:-2;pointer-events:none;box-shadow:0 0 24px var(--g,transparent)}
 .card:not(.vis),.card:not(.vis) *{animation-play-state:paused!important}
+.card:not(.vis) .ring::before,.card:not(.vis)::after,.card:not(.vis) .nm::before,.card:not(.vis) .nm::after{animation:none!important}
 .in{position:relative;background:var(--card);border-radius:17px;overflow:hidden;height:100%;cursor:pointer}
 .ph{position:relative;aspect-ratio:3/4;background:#fff;overflow:hidden}
 .ph img,.ph canvas.pic{width:100%;height:100%;object-fit:cover;display:block}
 .bhc{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .meta{position:relative;overflow:hidden;padding:12px 14px 14px;background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.05) 60%,rgba(255,255,255,.1));border-top:1px solid rgba(255,255,255,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -1px 0 rgba(0,0,0,.2)}
 .meta::after{content:"";position:absolute;top:-50%;left:-30%;width:55%;height:220%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.13),transparent);transform:rotate(12deg);pointer-events:none}
-.nm{position:relative;font-weight:800;font-size:17px;overflow-wrap:anywhere}
-.rb{position:relative;display:inline-block;margin-top:6px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:800;background:var(--c);color:#10101a;box-shadow:inset 0 1px 0 rgba(255,255,255,.65),0 2px 8px rgba(0,0,0,.3)}
+.nm{position:relative;display:inline-block;font-weight:800;font-size:17px;overflow-wrap:anywhere}
+.rb{position:relative;display:inline-block;margin:6px 0 0;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:800;background:var(--c);color:#10101a;box-shadow:inset 0 1px 0 rgba(255,255,255,.65),0 2px 8px rgba(0,0,0,.3)}
+.meta>.nm{display:block}
 @keyframes slide{to{transform:translateX(-33.3333%)}}
 @keyframes rot{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
-.r-rare{--c:#3ddc84;--g:#3ddc8450}
-.r-super-rare{--c:#4aa3ff;--g:#4aa3ff60}
-.r-epic{--c:#b45cff;--g:#b45cff60}
-.r-mythic{--c:#ff4d6d;--g:#ff4d6d66}
-.r-legendary{--c:#ffc83d;--g:#ffc83d80}
-.r-bonmax{--g:#ffffff40;background:#2a2a40}
-.r-bonmax::before,.r-secret::before,.r-developer::before{content:"";position:absolute;z-index:-1;left:0;top:0;bottom:0;width:300%;animation:slide 3s linear infinite}
-.r-bonmax::before{background:linear-gradient(90deg,#f33,#fa0,#ee2,#3d5,#2cf,#74f,#f4c,#f33,#fa0,#ee2,#3d5,#2cf,#74f,#f4c,#f33,#fa0,#ee2,#3d5,#2cf,#74f,#f4c,#f33)}
+@keyframes sweep{0%{transform:translateX(0)}60%,100%{transform:translateX(420%)}}
+@keyframes breathe{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes twinkle{0%,100%{opacity:.5}20%{opacity:1}38%{opacity:.65}60%{opacity:1}82%{opacity:.55}}
+@keyframes flick{0%,100%{opacity:.85}8%{opacity:.3}12%{opacity:.95}55%{opacity:.7}58%{opacity:.25}61%{opacity:.9}}
+@keyframes hue{to{filter:hue-rotate(360deg)}}
+.slide::before,.r-bonmax .ring::before,.r-secret .ring::before,.r-developer .ring::before,.r-original .ring::before{content:"";position:absolute;left:0;top:0;bottom:0;width:300%;animation:slide 3s linear infinite}
+.spin::before,.r-epic .ring::before,.r-bonultra .ring::before,.card.galaxy .ring::before,.card.void .ring::before{content:"";position:absolute;left:50%;top:50%;width:300%;aspect-ratio:1;animation:rot 5s linear infinite}
+.shine::before,.r-super-rare .ring::before,.r-legendary .ring::before{content:"";position:absolute;top:0;bottom:0;left:-45%;width:45%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.75),transparent);animation:sweep 3.4s ease-in-out infinite}
+.r-rare{--c:#3ddc84;--g:#3ddc8470}.r-rare::after{animation:breathe 4s ease-in-out infinite}
+.r-super-rare{--c:#4aa3ff;--g:#4aa3ff99}.r-super-rare::after{animation:twinkle 2.6s ease-in-out infinite}
+.r-epic{--c:#7a3cff;--g:#b45cffaa}.r-epic .ring::before{background:conic-gradient(#b45cff,#5b2bd6,#e7b6ff,#5b2bd6,#b45cff);animation-duration:6s}.r-epic::after{animation:pulse 2.4s ease-in-out infinite}
+.r-mythic{--c:#ff4d6d;--g:#ff4d6dcc}.r-mythic .ring{background:linear-gradient(135deg,#ff6a86,#a3112b)}.r-mythic::after{animation:pulse 1.5s ease-in-out infinite}
+.r-legendary{--c:#ffc83d;--g:#ffc83d99}.r-legendary .ring{background:linear-gradient(135deg,#ffe27a,#d99a00)}.r-legendary .ring::before{width:55%;animation-duration:3.8s}.r-legendary::after{animation:breathe 3s ease-in-out infinite}
+.r-bonmax{--g:#ff5fd0aa}.r-bonmax .ring{background:#2a2a40}.r-bonmax .ring::before{background:linear-gradient(90deg,#f33,#fa0,#ee2,#3d5,#2cf,#74f,#f4c,#f33,#fa0,#ee2,#3d5,#2cf,#74f,#f4c,#f33,#fa0,#ee2,#3d5,#2cf,#74f,#f4c,#f33)}.r-bonmax::after{animation:hue 6s linear infinite}
 .r-bonmax .rb{background:linear-gradient(90deg,#f33,#fa0,#ee2,#3d5,#2cf,#74f,#f4c);color:#111}
 .r-bonmax .in{background:linear-gradient(160deg,#1c1830,#171b30)}
-.r-bonmax .nm,.card.galaxy .nm{background:linear-gradient(90deg,#f66,#fb3,#6e6,#4cf,#a8f,#f6c);-webkit-background-clip:text;background-clip:text;color:transparent}
-.r-secret{--c:#d8d8d8;--g:#ffffff30;background:#222}
-.r-secret::before{background:linear-gradient(90deg,#000,#fff,#000,#fff,#000,#fff,#000);animation-duration:4s}
+.r-bonmax .nm{background:linear-gradient(90deg,#f66,#fb3,#6e6,#4cf,#a8f,#f6c);-webkit-background-clip:text;background-clip:text;color:transparent}
+.r-secret{--c:#d8d8d8;--g:#ffffff55}.r-secret .ring{background:#222}.r-secret .ring::before{background:linear-gradient(90deg,#000,#fff,#000,#fff,#000,#fff,#000);animation-duration:4.5s}.r-secret::after{animation:flick 5s linear infinite}
 .r-secret .in{background:#0b0b0b}.r-secret .rb{background:#fff;color:#000}
-.r-bonultra{--c:#fff;--g:#fff9;background:#111}
-.r-bonultra::before{content:"";position:absolute;z-index:-1;left:50%;top:50%;width:300%;aspect-ratio:1;background:conic-gradient(#000,#fff,#000,#fff,#000,#fff,#000);animation:rot 4s linear infinite}
+.r-bonultra{--c:#ffd400;--g:#ffd400aa}.r-bonultra .ring{background:#2a2000}.r-bonultra .ring::before{background:conic-gradient(#ffd400,#fff,#ffb800,#fff,#ffd400,#fff,#ffb800,#fff,#ffd400);animation-duration:4s}.r-bonultra::after{animation:breathe 2.6s ease-in-out infinite}
 .r-bonultra .in{background:linear-gradient(160deg,#050505,#17140a)}
 .r-bonultra .ph{background:#000}
 .r-bonultra .rb{background:linear-gradient(90deg,#ffd400,#fff,#ffd400);color:#000;border:1px solid #000}
-.r-bonultra .nm,.r-developer .nm{background:linear-gradient(90deg,#ffd400,#fff,#ffd400);-webkit-background-clip:text;background-clip:text;color:transparent}
-.r-developer{--c:#cfcfcf;--g:#ffffff40;background:#555}
-.r-developer::before{background:linear-gradient(90deg,#777,#fff,#777,#fff,#777,#fff,#777);animation-duration:4s}
+.r-bonultra .nm{background:linear-gradient(90deg,#ffd400,#fff,#ffd400);-webkit-background-clip:text;background-clip:text;color:transparent}
+.r-developer{--c:#cfcfcf;--g:#e6e8eeaa}.r-developer .ring{background:#555}.r-developer .ring::before{background:linear-gradient(90deg,#8a8a8a,#fff,#8a8a8a,#fff,#8a8a8a,#fff,#8a8a8a);animation-duration:4s}.r-developer::after{animation:breathe 3.4s ease-in-out infinite}
 .r-developer .rb{background:linear-gradient(90deg,#9a9a9a,#fff,#9a9a9a);color:#111}
-.r-developer .nm{background:linear-gradient(90deg,#9a9a9a,#fff,#9a9a9a);-webkit-background-clip:text;background-clip:text;color:transparent}
-.card.glitch{--c:#ff1a1a;--g:#ff1a1a99;background:#ff1a1a;animation:gl 2.2s infinite steps(1)}
-.card.glitch::before{content:none}
-.card.glitch .in{background:#1a0000}.card.glitch .nm{color:#ff4040;text-shadow:2px 0 #0ff,-2px 0 #f0f}.card.glitch .rb{background:#ff1a1a;color:#000}
-.card.glitch .ph{animation:gl2 1.6s infinite steps(1)}
-@keyframes gl{0%,90%,100%{transform:none}92%{transform:translate(-4px,1px) skewX(4deg)}94%{transform:translate(5px,-1px) skewX(-5deg)}96%{transform:translate(-2px,2px)}}
-@keyframes gl2{0%,84%,100%{filter:none;transform:none}86%{filter:hue-rotate(90deg) saturate(3);transform:translateX(5px) scaleY(1.03)}90%{filter:invert(1) hue-rotate(180deg);transform:translateX(-6px)}93%{filter:contrast(2) brightness(1.4)}}
-.card.galaxy{--g:#7a5cffaa;background:#222}
-.card.galaxy::before{background:conic-gradient(#2f6bff,#5fd0ff,#ff5fd0,#a04bff,#2f6bff)}
+.r-developer .nm{background:linear-gradient(90deg,#aab,#fff,#aab);-webkit-background-clip:text;background-clip:text;color:transparent}
+.r-original{--c:#6b4a2e;--g:#4a7bd6aa}.r-original .ring{background:#4a3a2a}.r-original .ring::before{background:linear-gradient(90deg,#8a5f3e,#2d4b94,#6b4a2e,#4a7bd6,#8a5f3e,#2d4b94,#6b4a2e,#4a7bd6,#8a5f3e,#2d4b94,#6b4a2e,#4a7bd6,#8a5f3e);animation-duration:5s}.r-original::after{animation:breathe 3.6s ease-in-out infinite}
+.r-original .rb{background:linear-gradient(90deg,#8a5f3e,#2d4b94);color:#fff}
+.r-original .nm{background:linear-gradient(90deg,#e0b184,#9fc0ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.card.glitch{--c:#ff1a1a;--g:#ff1a1a99;animation:gl 6s infinite steps(1)}
+.card.glitch .ring{background:#ff1a1a}.card.glitch .ring::before,.card.glitch::after{content:none}.card.glitch::after{content:""}.card.glitch::after{animation:none}
+.card.glitch .in{background:#1a0000}.card.glitch .nm{background:none;color:#ff4040;-webkit-text-fill-color:#ff4040;text-shadow:2px 0 #0ff,-2px 0 #f0f}.card.glitch .rb{background:#ff1a1a;color:#000}
+.card.glitch .ph{animation:gl2 6s infinite steps(1)}
+@keyframes gl{0%,93%,98%,100%{transform:none}94%{transform:translate(-4px,1px) skewX(4deg)}95%{transform:translate(5px,-1px) skewX(-5deg)}96%{transform:translate(-2px,2px)}}
+@keyframes gl2{0%,92%,98%,100%{filter:none;transform:none}93%{filter:hue-rotate(90deg) saturate(3);transform:translateX(5px) scaleY(1.03)}95%{filter:invert(1) hue-rotate(180deg);transform:translateX(-6px)}96.5%{filter:contrast(2) brightness(1.4)}}
+.card.galaxy{--c:#5a3cff;--g:#7a5cffbb}.card.galaxy .ring{background:#222}.card.galaxy .ring::before{background:conic-gradient(#2f6bff,#5fd0ff,#ff5fd0,#a04bff,#2f6bff);animation-duration:6s}.card.galaxy::after{animation:hue 8s linear infinite}
 .card.galaxy .in{background:linear-gradient(160deg,#050818,#16062e)}.card.galaxy .ph{background:#fff}
-.card.void{--g:#7a2cffaa;background:#150a26}
-.card.void::before{background:conic-gradient(#0a0014,#8a3dff,#0a0014,#c9a0ff,#0a0014);animation-duration:5s}
+.card.galaxy .nm{background:linear-gradient(90deg,#7cb8ff,#c48bff,#ff7fd6,#6fe0ff,#a38bff);-webkit-background-clip:text;background-clip:text;color:transparent;display:block;width:fit-content}
+.card.galaxy .nm::before,.card.galaxy .nm::after{content:"";position:absolute;inset:-5px -8px;pointer-events:none;animation:twinkle 2.4s ease-in-out infinite;background:radial-gradient(circle at 8% 25%,#fff 0 1.3px,transparent 2.2px),radial-gradient(circle at 42% 75%,#9fefff 0 1px,transparent 2px),radial-gradient(circle at 78% 20%,#fff 0 1.4px,transparent 2.2px),radial-gradient(circle at 96% 70%,#ffb0e8 0 1px,transparent 2px)}
+.card.galaxy .nm::after{animation-delay:-1.2s;transform:scale(-1,1)}
+.card.void{--g:#8a3dffcc}.card.void .ring{background:#150a26}.card.void .ring::before{background:conic-gradient(#0a0014,#8a3dff,#0a0014,#c9a0ff,#0a0014);animation-duration:5s}.card.void::after{animation:pulse 2.2s ease-in-out infinite}
 .card.void .in{background:linear-gradient(160deg,#0a0414,#1a0830)}.card.void .ph{background:#150a26}
 .card.void .nm{background:none;color:#e5d0ff;text-shadow:0 0 10px #8a3dff;-webkit-text-fill-color:#e5d0ff}
 .card.void .rb{background:linear-gradient(90deg,#8a3dff,#e5d0ff,#8a3dff);color:#10001e;border:1px solid #10001e}
+.t-original{background:linear-gradient(90deg,#8a5f3e,#2d4b94);color:#fff}
 .empty{grid-column:1/-1;text-align:center;color:var(--mut);padding:50px 10px;border:2px dashed rgba(255,255,255,.25);border-radius:20px}
 .ov{position:fixed;inset:0;z-index:60;background:rgba(6,8,24,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:14px}
 .box{background:linear-gradient(145deg,rgba(255,255,255,.2),rgba(255,255,255,.04) 42%,rgba(255,255,255,.1)),rgba(16,20,48,.78);border:1px solid rgba(255,255,255,.36);border-radius:26px;width:min(520px,100%);max-height:92svh;overflow:auto;padding:22px;box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 1px 0 0 rgba(255,255,255,.14),inset 0 -1px 0 rgba(255,255,255,.2),0 24px 70px rgba(0,0,0,.55)}
@@ -137,7 +148,7 @@ footer p{margin-top:10px;color:var(--mut);font-size:14px}
 @keyframes rflick{0%,100%{opacity:1}30%{opacity:.93}60%{opacity:.85}}
 @keyframes shake{25%{transform:translate(8px,-6px) scale(1.04)}50%{transform:translate(-8px,6px)}75%{transform:translate(6px,8px) scale(1.06)}}
 body{top:0!important}
-@media(prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}.card{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.card{opacity:1;transform:none}}
 </style>
 </head>
 <body>
@@ -184,7 +195,7 @@ body{top:0!important}
 
 <script>
 /* ---- media files: everything lives in the images/ and audio/ folders ---- */
-const IMG={"mini-bon": "images/characters/mini-bon.png", "bon-saw": "images/characters/bon-saw.png", "mrbon-bee": "images/characters/mrbon-bee.png", "mrbon-toxic": "images/characters/mrbon-toxic.png", "cartoon-bon": "images/characters/cartoon-bon.png", "bonsquad": "images/characters/bonsquad.png", "mrbon-galaxy": "images/characters/mrbon-galaxy.png", "no-results": "images/no-results.png", "mrbonai": "images/characters/mrbonai.png", "mrbon-studiox": "images/characters/mrbon-studiox.png", "super-massive-black-hole-bon": "images/characters/super-massive-black-hole-bon.png", "virus-head": "images/characters/mrbon-virus-head.png", "moon-bon": "images/characters/moon-bon.png", "moon-blood-bon": "images/characters/moon-blood-bon.png", "mrbon-exe": "images/characters/mrbon-exe.png", "mrbon-exeller": "images/characters/mrbon-exeller.png", "mrbon-virus": "images/characters/mrbon-virus.png", "mrbon-smile": "images/characters/mrbon-smile.png", "panda-bon": "images/characters/panda-bon.png", "black-bon": "images/characters/black-bon.png", "mrbon": "images/characters/mrbon.png", "mrbons": "images/characters/mrbons.png", "mrbonv": "images/characters/mrbonv.png", "mrbonx": "images/characters/mrbonx.png", "polar-bon": "images/characters/polar-bon.png", "black-hole-bon": "images/characters/black-hole-bon.png", "mrbon-ghost": "images/characters/mrbon-ghost.png", "spooky-bon": "images/characters/spooky-bon.png", "festive-bon": "images/characters/festive-bon.png", "mrbon-shadow": "images/characters/mrbon-shadow.png", "mrbon-void": "images/characters/mrbon-void.png"};
+const IMG={"general-bon":"images/characters/general-bon.png","mini-bon": "images/characters/mini-bon.png", "bon-saw": "images/characters/bon-saw.png", "mrbon-bee": "images/characters/mrbon-bee.png", "mrbon-toxic": "images/characters/mrbon-toxic.png", "cartoon-bon": "images/characters/cartoon-bon.png", "bonsquad": "images/characters/bonsquad.png", "mrbon-galaxy": "images/characters/mrbon-galaxy.png", "no-results": "images/no-results.png", "mrbonai": "images/characters/mrbonai.png", "mrbon-studiox": "images/characters/mrbon-studiox.png", "super-massive-black-hole-bon": "images/characters/super-massive-black-hole-bon.png", "virus-head": "images/characters/mrbon-virus-head.png", "moon-bon": "images/characters/moon-bon.png", "moon-blood-bon": "images/characters/moon-blood-bon.png", "mrbon-exe": "images/characters/mrbon-exe.png", "mrbon-exeller": "images/characters/mrbon-exeller.png", "mrbon-virus": "images/characters/mrbon-virus.png", "mrbon-smile": "images/characters/mrbon-smile.png", "panda-bon": "images/characters/panda-bon.png", "black-bon": "images/characters/black-bon.png", "mrbon": "images/characters/mrbon.png", "mrbons": "images/characters/mrbons.png", "mrbonv": "images/characters/mrbonv.png", "mrbonx": "images/characters/mrbonx.png", "polar-bon": "images/characters/polar-bon.png", "black-hole-bon": "images/characters/black-hole-bon.png", "mrbon-ghost": "images/characters/mrbon-ghost.png", "spooky-bon": "images/characters/spooky-bon.png", "festive-bon": "images/characters/festive-bon.png", "mrbon-shadow": "images/characters/mrbon-shadow.png", "mrbon-void": "images/characters/mrbon-void.png"};
 const SCREAM="audio/scream.mp3";
 const MEDIA={
 "virus-jump":{a:"audio/virus-1-second-jumpscare.mp3",pk:[43, 100, 94, 87, 86, 93, 92, 92, 86, 92, 90, 91, 89, 90, 83, 93, 91, 83, 96, 94, 86, 92, 85, 88, 92, 93, 91, 83],d:1.4},
@@ -202,7 +213,7 @@ document.querySelectorAll(".ov").forEach(o=>o.addEventListener("click",e=>{if(e.
 addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".ov").forEach(o=>o.hidden=true)});
 
 /* ---- characters: add new ones in BUILTIN below (copy a line) ---- */
-const MRBON={id:"builtin-mrbon",builtin:true,name:"MrBon",rarity:"Rare",photoURL:IMG["mrbon"],description:`# MrBon — History and Origin
+const MRBON={id:"builtin-mrbon",builtin:true,name:"MrBon",rarity:"Original",photoURL:IMG["mrbon"],description:`# MrBon — History and Origin
 
 # Origin
 
@@ -621,33 +632,30 @@ Instead of an ordinary weapon, Bon Saw uses a huge circular saw and a knife. His
 - Appearance: heavily wounded body, bandages, blood and metal chains.
 
 Bon Saw is one of the most terrifying forms of the bear in the MrBon universe.`},
+  {id:"b-general-bon",builtin:true,name:"General Bon",rarity:"BonMax",photoURL:IMG["general-bon"],description:`General Bon is a metallic robot with powerful energy weapons and high-tech abilities.
+
+# Appearance
+
+General Bon has a metallic body, glowing goggles and sharp teeth. In his hands are special pistols that can fire not ordinary bullets, but powerful laser charges. In the center of his chest is a round energy reactor containing enormous energy.
+
+# Abilities
+
+## ESP Vision (See through walls)
+
+General Bon can see opponents even through walls thanks to a special scanning system. This allows him to easily detect and find hidden enemies.
+
+Ability cooldown: 40 seconds.`},
 ];
 
-const ALL=BUILTIN.map((c,i)=>[c,i]).sort((a,b)=>{const x=RAR.indexOf(a[0].rarity),y=RAR.indexOf(b[0].rarity);return(x<0?99:x)-(y<0?99:y)||a[1]-b[1]}).map(z=>z[0]);
+const ORDER=["Original",...RAR];
+const ALL=BUILTIN.map((c,i)=>[c,i]).sort((a,b)=>{const x=ORDER.indexOf(a[0].rarity),y=ORDER.indexOf(b[0].rarity);return(x<0?99:x)-(y<0?99:y)||a[1]-b[1]}).map(z=>z[0]);
 
 /* ---- visibility: animations only run for cards on screen ---- */
 const io=new IntersectionObserver(es=>es.forEach(x=>{const t=x.target;t.classList.toggle("vis",x.isIntersecting);
   if(x.isIntersecting&&t.classList.contains("card")){t.classList.add("show");const i=t.querySelector("img[data-src]");if(i)loadImg(i)}if(t._fx)t._fx.on=x.isIntersecting}),{rootMargin:"200px 0px"});
 
-/* ---- card photos: your PNG is read once, a card-sized copy is kept in memory (4x less RAM/GPU than full PNGs) ---- */
-const BMP=new Map(),Q=[];let busy=0;
-function loadImg(i){Q.push(i);pump()}
-function pump(){while(busy<3&&Q.length){const i=Q.shift();if(!i.isConnected||!i.dataset.src)continue;busy++;doLoad(i).finally(()=>{busy--;pump()})}}
-function plain(i){i.src=i.dataset.src;i.removeAttribute("data-src")}
-async function doLoad(i){
-  const src=i.dataset.src;
-  if(!window.createImageBitmap||location.protocol==="file:")return plain(i);
-  try{
-    let b=BMP.get(src);
-    if(!b){
-      const r=await fetch(src);if(!r.ok)throw 0;const blob=await r.blob();
-      const w=Math.round(Math.min(700,(i.parentElement.clientWidth||220)*Math.min(devicePixelRatio||1,2)));
-      b=await createImageBitmap(blob,{resizeWidth:w,resizeQuality:"high"});BMP.set(src,b)}
-    if(!i.isConnected)return;
-    const cv=document.createElement("canvas");cv.className="pic";cv.width=b.width;cv.height=b.height;cv.setAttribute("role","img");cv.setAttribute("aria-label",i.alt);
-    cv.getContext("2d").drawImage(b,0,0);i.replaceWith(cv);
-  }catch(e){if(i.isConnected&&i.dataset.src)plain(i)}
-}
+/* ---- card photos: plain <img> from images/characters/*.png, loaded only when the card is near the screen ---- */
+function loadImg(i){const s=i.dataset.src;i.removeAttribute("data-src");i.onerror=()=>{if(!i._r){i._r=1;i.src=s+"?r="+Date.now()}};i.src=s}
 
 /* ---- canvas effects for BonULTRA cards ---- */
 const FX=[];
@@ -731,12 +739,12 @@ function card(c){
   const d=document.createElement("div");d.className="card "+slug(c.rarity)+(c.fx?" "+c.fx:"");
   const inn=document.createElement("div");inn.className="in";
   const ph=document.createElement("div");ph.className="ph";
-  const im=new Image();im.dataset.src=c.photoURL;im.alt=c.name;im.decoding="async";ph.appendChild(im);
+  const im=new Image();im.dataset.src=c.photoURL;im.alt=c.name;ph.appendChild(im);
   if(c.fx==="galaxy")addFx(ph,"gal");else if(c.fx==="void")addFx(ph,"void");else if(c.rarity==="BonULTRA")addFx(ph,"bh");
   const m=document.createElement("div");m.className="meta";
   const n=document.createElement("div");n.className="nm notranslate";n.textContent=c.name;
   const r=document.createElement("span");r.className="rb notranslate";r.textContent=c.rarity;
-  m.append(n,r);inn.append(ph,m);inn.onclick=()=>detail(c);d.appendChild(inn);io.observe(d);return d}
+  m.append(n,r);inn.append(ph,m);inn.onclick=()=>detail(c);const ring=document.createElement("i");ring.className="ring";d.append(ring,inn);io.observe(d);return d}
 function build(){
   const q=term.trim().toLowerCase();
   LIST=ALL.filter(c=>(!rf||c.rarity===rf)&&(!q||(c.name+" "+c.rarity).toLowerCase().includes(q)));
