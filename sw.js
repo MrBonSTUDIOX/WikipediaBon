@@ -1,7 +1,7 @@
 /* WikipediaBon — Service Worker (offline mode). Лежит рядом с index.html.
    Заранее кэшируется только оболочка; фото персонажей кэшируются, когда их открывают. */
-const V = "wikipediabon-v3";
-const PRE = ["./", "./index.html", "images/wikipediabon-logo.png", "images/mrbon-icon.png"];
+const V = "wikipediabon-v4";
+const PRE = ["./", "./index.html", "wikipediabon-logo.png", "mrbon-icon.png", "mrbon-studiox-logo.png", "no-internet.png", "no-results.png"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(V).then(c => Promise.all(PRE.map(u => c.add(u).catch(() => {})))).then(() => self.skipWaiting()));
 });
