@@ -145,7 +145,17 @@ input{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,2
 .lgl{max-height:50svh;overflow:auto;margin-top:12px}
 footer{text-align:center;padding:40px 16px calc(34px + env(safe-area-inset-bottom));margin:50px 12px 12px;border-radius:28px;border:1px solid rgba(255,255,255,.3);background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.04) 45%,rgba(255,255,255,.09));box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(255,255,255,.12),0 12px 40px rgba(0,0,0,.35)}
 footer a{display:inline-block}footer img{width:84px;height:auto;transition:transform .3s}footer a:hover img{transform:rotate(-8deg) scale(1.1)}
+footer .btn.studiox{display:inline-flex;padding:7px 20px 7px 7px;gap:12px;font-size:17px;font-weight:800}
+footer .studiox img{width:46px;height:46px;border-radius:50%;background:#fff;object-fit:contain;flex:none}
 footer p{margin-top:10px;color:var(--mut);font-size:14px}
+.src{font-size:11px;line-height:1.35;color:var(--mut);text-align:center;padding:5px 8px 6px;overflow-wrap:anywhere}
+.src a{color:#8fc2ff;text-decoration:underline;text-underline-offset:2px;position:relative;z-index:2}
+.hero .src{margin-top:8px;padding:0}.det .src{padding:6px 4px 0}footer .src{margin-top:6px;padding:0}.empty .src{margin:0 0 12px}
+.cred{list-style:none;margin:14px 0 0;padding:0}
+.cred li{padding:11px 0;border-top:1px solid rgba(255,255,255,.18);overflow-wrap:anywhere}
+.cred li:first-child{border-top:0}
+.cred small{display:block;color:var(--mut);font-size:12px;margin-bottom:2px}
+.cred a{color:#8fc2ff;font-weight:700;text-decoration:underline;text-underline-offset:3px}
 .apkp{margin-top:14px;font-size:13px}.apkp a{color:#8fc2ff}
 #toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.06)),rgba(22,26,58,.86);color:#fff;border:1px solid rgba(255,255,255,.38);padding:12px 18px;border-radius:999px;font-weight:700;z-index:99;max-width:92vw;text-align:center;transition:opacity .3s;opacity:0;pointer-events:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 30px rgba(0,0,0,.4)}
 #toast.on{opacity:1}
@@ -153,6 +163,7 @@ footer p{margin-top:10px;color:var(--mut);font-size:14px}
 .offbar.on{background:linear-gradient(135deg,rgba(70,220,130,.92),rgba(30,160,90,.88));color:#04200f}
 .offbox{text-align:center}
 .offbox svg{width:84px;height:84px;margin:4px auto 10px;display:block}
+.offbox .offimg{width:min(220px,62%);height:auto;margin:0 auto 8px;display:block}
 .offbox h3{margin-bottom:4px}.offbox .ru{font-size:18px;font-weight:700;color:#ffd9a0}
 .offbox p{color:var(--mut);margin-top:12px;font-size:14px}
 .offbox .row{justify-content:center}
@@ -173,14 +184,28 @@ body{top:0!important}
 .chip.t-bonultra,.r-bonultra .rb{background:linear-gradient(#000,#000) padding-box,linear-gradient(90deg,#ffd400,#fff,#ffb800,#fff,#ffd400,#fff,#ffb800,#fff,#ffd400) border-box;background-size:100% 100%,200% 100%;background-repeat:no-repeat,repeat-x;border:2px solid transparent;color:#fff;animation:bordslide 2.2s linear infinite,ultraglow 2.2s ease-in-out infinite}
 .r-bonmax .rb,.r-bonultra .rb{padding:1px 9px}
 .chip.t-bonmax::before,.chip.t-bonultra::before{opacity:.25}
+
+/* ===== Chef Bon pops up and says "Bon appétit!" when his page is opened (5 min cooldown, never blocks clicks) ===== */
+#chefsay{position:fixed;right:0;bottom:0;z-index:80;width:min(88vw,370px);height:min(74vw,310px);pointer-events:none;visibility:hidden;transition:visibility 0s linear .9s}
+#chefsay.on{visibility:visible;transition-delay:0s}
+#chefsay img{position:absolute;right:-5%;bottom:-9%;width:min(55vw,235px);height:auto;transform-origin:50% 100%;transform:translateY(118%) rotate(9deg);transition:transform .75s cubic-bezier(.2,1.2,.4,1)}
+#chefsay.on img{transform:none;animation:chefwave2 1.3s ease-in-out .85s infinite}
+#chefsay:not(.on) img{transition-duration:.55s;transition-timing-function:ease-in}
+#chefsay .cb{position:absolute;left:1%;top:0;width:min(42vw,180px);aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;text-align:center;background:#fff;border:4px solid #000;border-radius:50%;box-shadow:0 8px 26px rgba(0,0,0,.5);transform:scale(0) rotate(-10deg);transform-origin:85% 100%;transition:transform .5s cubic-bezier(.2,1.6,.4,1) .55s}
+#chefsay.on .cb{transform:scale(1) rotate(0)}
+#chefsay:not(.on) .cb{transition-delay:0s;transition-duration:.25s}
+#chefsay .cb span{font:900 clamp(22px,6.6vw,32px)/1.05 system-ui,"Segoe UI",Roboto,sans-serif;color:#000;letter-spacing:.2px}
+@keyframes chefwave2{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(3deg) translateY(-4px)}}
+@media (prefers-reduced-motion:reduce){#chefsay img,#chefsay .cb{transition:none}#chefsay.on img{animation:none}}
 </style>
 </head>
 <body>
 <div class="bgfx" aria-hidden="true"></div>
-<div class="top"><a class="btn sm" id="bApk" href="WikipediaBon.apk" download title="Download the Android app (recommended — read offline)">⬇ APK</a><button class="btn" id="bLang" aria-label="Language"><span id="lgFlag" class="fl"></span><span id="lgCode" class="notranslate">EN</span> ▾</button></div>
+<div class="top"><button class="btn sm" id="bCred" type="button">Credits</button><a class="btn sm" id="bApk" href="WikipediaBon.apk" download title="Download the Android app (recommended — read offline)">⬇ APK</a><button class="btn" id="bLang" aria-label="Language"><span id="lgFlag" class="fl"></span><span id="lgCode" class="notranslate">EN</span> ▾</button></div>
 
 <section class="hero">
   <img class="wm" alt="WikipediaBon" src="wikipediabon-logo.png" width="2000" height="302" fetchpriority="high" decoding="async">
+  <div class="src notranslate">Source: WikipediaBon — <a href="https://wikipediabon.com/" target="_blank" rel="noopener">wikipediabon.com</a></div>
   <p>The encyclopedia of MrBon characters</p>
   <div class="down"><a href="#gallery" aria-label="Scroll to characters">↓</a></div>
 </section>
@@ -194,12 +219,23 @@ body{top:0!important}
 </main>
 
 <footer>
-  <a href="https://mrbonstudiox.github.io/MrBon.StudioX/" aria-label="MrBon Studio X"><img alt="MrBon Studio X" src="mrbon-icon.png" loading="lazy" decoding="async" width="84" height="84"></a>
+  <a class="btn studiox" href="https://mrbonstudiox.github.io/MrBon.StudioX/" target="_blank" rel="noopener" aria-label="MrBon StudioX"><img alt="" src="mrbon-studiox-logo.png" decoding="async" width="46" height="46"><span class="notranslate">MrBon StudioX</span></a>
+  <div class="src notranslate">Source: WikipediaBon — <a href="https://wikipediabon.com/" target="_blank" rel="noopener">wikipediabon.com</a></div>
   <p>Created by MrBon Studio X.</p>
   <p class="apkp" id="apkNote">📱 Recommended: install the Android app to read offline. <a href="WikipediaBon.apk" download>Download APK</a></p>
 </footer>
 
 <div class="ov" id="ovDet" hidden><div class="box det" id="det"></div></div>
+<div class="ov" id="ovCred" hidden><div class="box" role="dialog" aria-modal="true" aria-labelledby="credT">
+  <h3 id="credT">Credits</h3>
+  <ul class="cred">
+    <li><small>Creator and founder</small><span class="notranslate">Asadullah Elchoev</span></li>
+    <li><small>Studio</small><a class="notranslate" href="https://mrbonstudiox.github.io/MrBon.StudioX/" target="_blank" rel="noopener">MrBon StudioX</a></li>
+    <li><small>Encyclopedia</small><span class="notranslate">WikipediaBon</span></li>
+    <li><small>Official website</small><a class="notranslate" href="https://wikipediabon.com/" target="_blank" rel="noopener">https://wikipediabon.com/</a></li>
+  </ul>
+  <div class="row"><button class="btn" id="credClose" type="button">Close</button></div>
+</div></div>
 <div class="ov" id="ovLang" hidden><div class="box notranslate">
   <h3>🌐 Language</h3>
   <input id="lgQ" type="search" placeholder="Search language…" autocomplete="off" aria-label="Search language">
@@ -208,18 +244,20 @@ body{top:0!important}
 </div></div>
 <div id="offbar" class="offbar notranslate" role="status" hidden></div>
 <div class="ov" id="ovOff" hidden><div class="box offbox notranslate">
-  <svg viewBox="0 0 64 64" fill="none" stroke="#ffb03c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 24c13-12 39-12 52 0M15 33c9-8 25-8 34 0M24 42c5-4 11-4 16 0"/><circle cx="32" cy="51" r="2.5" fill="#ffb03c"/><path d="M8 8l48 48" stroke="#ff5a5a"/></svg>
+  <img class="offimg" src="no-internet.png" alt="No internet" width="700" height="576" decoding="async" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+  <svg hidden viewBox="0 0 64 64" fill="none" stroke="#ffb03c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 24c13-12 39-12 52 0M15 33c9-8 25-8 34 0M24 42c5-4 11-4 16 0"/><circle cx="32" cy="51" r="2.5" fill="#ffb03c"/><path d="M8 8l48 48" stroke="#ff5a5a"/></svg>
   <h3>No internet connection</h3>
   <div class="ru">Нет подключения к интернету</div>
   <p id="offWhy">You can keep reading characters that are already loaded.<br>Вы можете читать уже загруженное.</p>
   <div class="row"><button class="btn" id="offRetry">Try again</button><button class="btn pri" id="offOk" style="background:linear-gradient(135deg,rgba(255,196,120,.9),rgba(224,150,70,.75));color:#2a1604">OK</button></div>
 </div></div>
 <div id="scare" hidden></div>
+<div id="chefsay" class="notranslate" aria-hidden="true"><div class="cb"><span>Bon<br>appétit!</span></div><img src="chef-bon-hi.png" alt="" decoding="async" onerror="this.hidden=true"></div>
 <div id="toast" role="status"></div>
 
 <script>
 /* ---- media files: everything lives in the images/ and  folders ---- */
-const IMG={"general-bon":"Character/general-bon.png","mini-bon": "Character/mini-bon.png", "bon-saw": "Character/bon-saw.png", "mrbon-bee": "Character/mrbon-bee.png", "mrbon-toxic": "Character/MrBon-Toxic.png", "cartoon-bon": "Character/Cartoon-Bon.png", "bonsquad": "Character/BonSquad.png", "mrbon-galaxy": "Character/mrbon-galaxy.png", "no-results": "no-results.png", "mrbonai": "Character/mrbonai.png", "mrbon-studiox": "Character/mrbon-studiox.png", "super-massive-black-hole-bon": "Character/super-massive-black-hole-bon.png", "virus-head": "mrbon-virus-head.png", "moon-bon": "Character/moon-bon.png", "moon-blood-bon": "Character/moon-blood-bon.png", "mrbon-exe": "Character/mrbon-exe.png", "mrbon-exeller": "Character/mrbon-exeller.png", "mrbon-virus": "Character/mrbon-virus.png", "mrbon-smile": "Character/mrbon-smile.png", "panda-bon": "Character/panda-bon.png", "black-bon": "Character/black-bon.png", "mrbon": "Character/mrbon.png", "mrbons": "Character/mrbons.png", "mrbonv": "Character/mrbonv.png", "mrbonx": "Character/mrbonx.png", "polar-bon": "Character/polar-bon.png", "black-hole-bon": "Character/black-hole-bon.png", "mrbon-ghost": "Character/mrbon-ghost.png", "spooky-bon": "Character/spooky-bon.png", "festive-bon": "Character/festive-bon.png", "mrbon-shadow": "Character/mrbon-shadow.png", "mrbon-void": "Character/mrbon-void.png"};
+const IMG={"chef-bon":"Character/chef-bon.png","general-bon":"Character/general-bon.png","mini-bon": "Character/mini-bon.png", "bon-saw": "Character/bon-saw.png", "mrbon-bee": "Character/mrbon-bee.png", "mrbon-toxic": "Character/MrBon-Toxic.png", "cartoon-bon": "Character/Cartoon-Bon.png", "bonsquad": "Character/BonSquad.png", "mrbon-galaxy": "Character/mrbon-galaxy.png", "no-results": "no-results.png", "mrbonai": "Character/mrbonai.png", "mrbon-studiox": "Character/mrbon-studiox.png", "super-massive-black-hole-bon": "Character/super-massive-black-hole-bon.png", "virus-head": "mrbon-virus-head.png", "moon-bon": "Character/moon-bon.png", "moon-blood-bon": "Character/moon-blood-bon.png", "mrbon-exe": "Character/mrbon-exe.png", "mrbon-exeller": "Character/mrbon-exeller.png", "mrbon-virus": "Character/mrbon-virus.png", "mrbon-smile": "Character/mrbon-smile.png", "panda-bon": "Character/panda-bon.png", "black-bon": "Character/black-bon.png", "mrbon": "Character/mrbon.png", "mrbons": "Character/mrbons.png", "mrbonv": "Character/mrbonv.png", "mrbonx": "Character/mrbonx.png", "polar-bon": "Character/polar-bon.png", "black-hole-bon": "Character/black-hole-bon.png", "mrbon-ghost": "Character/mrbon-ghost.png", "spooky-bon": "Character/spooky-bon.png", "festive-bon": "Character/festive-bon.png", "mrbon-shadow": "Character/mrbon-shadow.png", "mrbon-void": "Character/mrbon-void.png"};
 const SCREAM="scream.mp3";
 const MEDIA={
 "virus-jump":{a:"virus-1-second-jumpscare.mp3",pk:[43, 100, 94, 87, 86, 93, 92, 92, 86, 92, 90, 91, 89, 90, 83, 93, 91, 83, 96, 94, 86, 92, 85, 88, 92, 93, 91, 83],d:1.4},
@@ -228,6 +266,11 @@ const MEDIA={
 <script>
 "use strict";
 const $=id=>document.getElementById(id);
+/* attribution line shown under every image (never duplicated) */
+function srcLine(){const d=document.createElement("div");d.className="src notranslate";d.append("Source: WikipediaBon — ");
+  const a=document.createElement("a");a.href="https://wikipediabon.com/";a.target="_blank";a.rel="noopener";a.textContent="wikipediabon.com";
+  a.addEventListener("click",e=>e.stopPropagation());d.appendChild(a);return d}
+function attrib(img){const n=img.nextElementSibling;if(n&&n.classList.contains("src"))return;img.after(srcLine())}
 const RAR=["Rare","Super Rare","Epic","Mythic","Legendary","BonMax","Secret","BonULTRA","Developer"];
 const slug=r=>"r-"+r.toLowerCase().replace(/\s+/g,"-");
 const reduced=matchMedia("(prefers-reduced-motion:reduce)").matches;
@@ -656,6 +699,33 @@ Instead of an ordinary weapon, Bon Saw uses a huge circular saw and a knife. His
 - Appearance: heavily wounded body, bandages, blood and metal chains.
 
 Bon Saw is one of the most terrifying forms of the bear in the MrBon universe.`},
+  {id:"b-chef-bon",builtin:true,name:"Chef Bon",rarity:"Secret",photoURL:IMG["chef-bon"],description:`Chef Bon is a terrifying chef who works in the kitchen. Unlike an ordinary chef, he has two powerful chainsaws instead of normal hands.
+
+His main purpose is to prepare and deliver orders to customers as quickly as possible. However, behind his chef uniform hides a very dangerous and aggressive creature.
+
+Chef Bon is extremely fast and powerful, making him a serious threat to anyone who gets in his way.
+
+# Abilities
+
+## 1. Super Speed
+
+- Chef Bon can run 40% faster than normal.
+- He uses his incredible speed to deliver customer orders quickly.
+
+## 2. Insanity Mode
+
+- When Chef Bon goes insane, his speed increases to 70%.
+- His behaviour becomes even more aggressive and unpredictable.
+- He becomes much more dangerous.
+
+## 3. Double Chainsaws
+
+- Chef Bon has two chainsaws attached to his arms.
+- He can use them as deadly weapons.
+
+# Personality
+
+Normally focused on delivering orders, but when he becomes insane, he turns into a terrifying and uncontrollable monster.`},
   {id:"b-general-bon",builtin:true,name:"General Bon",rarity:"BonMax",photoURL:IMG["general-bon"],description:`General Bon is a metallic robot with powerful energy weapons and high-tech abilities.
 
 # Appearance
@@ -780,7 +850,7 @@ function build(){
   if(!LIST.length){
     const e=document.createElement("div");e.className="empty";const im=new Image();im.src=IMG["no-results"];im.alt="";im.style.cssText="width:min(260px,70%);height:auto;display:block;margin:0 auto 14px";
     const p=document.createElement("div");p.textContent="No results found";p.style.cssText="font-weight:800;font-size:19px;color:#fff";
-    const s=document.createElement("div");s.textContent="Try another name or rarity.";e.append(im,p,s);g.appendChild(e);if(TL!=="en")setTimeout(()=>trApply(g),0);return}
+    const s=document.createElement("div");s.textContent="Try another name or rarity.";e.append(im,srcLine(),p,s);g.appendChild(e);if(TL!=="en")setTimeout(()=>trApply(g),0);return}
   more();
 }
 function more(){
@@ -809,6 +879,7 @@ function rich(text){
     blk.split(/(https?:\/\/[^\s]+)/).forEach(s=>{if(/^https?:\/\//.test(s)){const a=document.createElement("a");a.href=s;a.textContent=s;a.target="_blank";a.rel="noopener";a.style.color="#8fc2ff";p.appendChild(a)}else p.appendChild(document.createTextNode(s))});box.appendChild(p)});
   return box}
 function detail(c){
+  if(c&&c.id==="b-chef-bon"&&window.chefSay)window.chefSay();
   const b=$("det");b.innerHTML="";
   const im=new Image();im.src=c.photoURL;im.alt=c.name;im.decoding="async";
   const h=document.createElement("h3");h.textContent=c.name;h.className="notranslate";h.style.margin="14px 0 6px";
@@ -910,14 +981,15 @@ function setLang(code){
   TL=code;trFail=trOk=0;trWarn=false;toast("Translating…");trApply(document.body);
 }
 $("bLang").onclick=()=>{$("lgQ").value="";langList();show("ovLang");setTimeout(()=>$("lgQ").focus(),50)};
+$("bCred").onclick=()=>show("ovCred");$("credClose").onclick=()=>hide("ovCred");
 $("lgQ").addEventListener("input",langList);$("lgClose").onclick=()=>hide("ovLang");
 
 /* ---- offline mode ---- */
 let ONLINE=true,offT=null;
 const isFile=location.protocol==="file:";
-async function ping(){
+async function ping(ms=4000){
   if(isFile||navigator.onLine===false)return navigator.onLine!==false;
-  try{const c=new AbortController(),k=setTimeout(()=>c.abort(),4000);await fetch(location.pathname+"?ping="+Date.now(),{method:"HEAD",cache:"no-store",signal:c.signal});clearTimeout(k);return true}catch(e){return false}
+  try{const c=new AbortController(),k=setTimeout(()=>c.abort(),ms);await fetch(location.pathname+"?ping="+Date.now(),{method:"HEAD",cache:"no-store",signal:c.signal});clearTimeout(k);return true}catch(e){return false}
 }
 function showOff(why){$("offWhy").innerHTML=(why?why+"<br>":"")+"You can keep reading characters that are already loaded.<br>Вы можете читать уже загруженное.";show("ovOff")}
 function setOnline(v){
@@ -932,16 +1004,27 @@ document.addEventListener("visibilitychange",async()=>{if(!document.hidden)setOn
 setInterval(async()=>{if(!ONLINE&&!document.hidden)setOnline(await ping())},8000);
 /* offline: never open pages that are not loaded yet (external links, APK) */
 document.addEventListener("click",e=>{
-  if(ONLINE)return;const a=e.target.closest&&e.target.closest("a[href]");if(!a)return;
+  const a=e.target.closest&&e.target.closest("a[href]");if(!a)return;
   const u=new URL(a.href,location.href);
   if(u.origin===location.origin&&u.pathname===location.pathname&&u.search===location.search&&!a.hasAttribute("download"))return;
-  e.preventDefault();e.stopPropagation();showOff("This page has not been loaded yet.");
+  if(!ONLINE){e.preventDefault();e.stopPropagation();showOff("This page has not been loaded yet.");return}
+  /* looks online: external links (logo button, credits…) first check the connection really works */
+  if(isFile||u.origin===location.origin||e.ctrlKey||e.metaKey||e.shiftKey||e.button)return;
+  e.preventDefault();e.stopPropagation();
+  ping(2500).then(ok=>{if(ok)window.open(a.href,a.target||"_self","noopener");else{setOnline(false);showOff("This page has not been loaded yet.")}});
 },true);
 $("offOk").onclick=()=>hide("ovOff");
 $("offRetry").onclick=async()=>{setOnline(await ping());if(!ONLINE)toast("Still offline")};
 if(navigator.onLine===false)setOnline(false);else ping().then(setOnline);
 /* inside the Android app the APK button is not needed */
 if(/; wv\)/.test(navigator.userAgent)||matchMedia("(display-mode: standalone)").matches){$("bApk").hidden=true;$("apkNote").hidden=true}
+/* ---- Chef Bon says "Bon appétit!" when his page opens; then a 5-minute cooldown (kept even after reload) ---- */
+(function(){const el=$("chefsay");let busy=false;const KEY="chefSayAt",CD=300000;
+  const last=()=>{try{return+localStorage.getItem(KEY)||0}catch(e){return window._csAt||0}};
+  const mark=()=>{const t=Date.now();try{localStorage.setItem(KEY,String(t))}catch(e){window._csAt=t}};
+  window.chefSay=function(){if(!el||busy||Date.now()-last()<CD)return;busy=true;mark();
+    setTimeout(()=>{el.classList.add("on");el.setAttribute("aria-hidden","false");
+      setTimeout(()=>{el.classList.remove("on");el.setAttribute("aria-hidden","true");setTimeout(()=>{busy=false},1000)},4800)},350)}})();
 if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol))addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 
 /* ---- start ---- */
