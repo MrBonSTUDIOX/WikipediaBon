@@ -200,6 +200,28 @@ body{top:0!important}
 
 .moreW{grid-column:1/-1;display:flex;justify-content:center;padding:8px 0 22px}
 .btn.more{min-width:220px;justify-content:center;font-size:17px;font-weight:800;padding:12px 26px}
+
+/* ===== classic look + performance: no glass/blur, calm cards, solid buttons ===== */
+.btn{background:#2b3160;border:1px solid rgba(255,255,255,.28);box-shadow:none;overflow:visible}
+.btn::before,.btn::after{display:none}
+.btn:hover{background:#3a4180}
+.btn.more{background:linear-gradient(135deg,#5b6cff,#8a4dff);border-color:rgba(255,255,255,.45);color:#fff;box-shadow:0 4px 14px rgba(90,80,255,.4)}
+.btn.more:hover{filter:brightness(1.12)}
+.top{background:rgba(13,16,32,.97);border-bottom:1px solid rgba(255,255,255,.12)}
+.down a{background:#2b3160;box-shadow:none}
+.chip{box-shadow:none}
+.meta{background:rgba(255,255,255,.07);box-shadow:none}.meta::after{display:none}
+.rb{box-shadow:none}
+.box{background:#161a38;box-shadow:0 20px 50px rgba(0,0,0,.55)}
+.ov{background:rgba(6,8,24,.85);-webkit-backdrop-filter:none;backdrop-filter:none}
+.card::after{box-shadow:0 0 10px var(--g,transparent)}
+.card,.card *,.card::before,.card::after,.card *::before,.card *::after{animation:none!important}
+@media(max-width:520px){
+  .grid{grid-template-columns:repeat(4,1fr);gap:6px}
+  .card{border-radius:12px;padding:2px}.ring,.card::after{border-radius:12px}.in{border-radius:10px}
+  .meta{padding:6px 5px 7px}.nm{font-size:11px;line-height:1.2}.rb{font-size:9px;padding:1px 6px;margin-top:4px}
+  .r-bonmax .rb,.r-bonultra .rb{padding:0 6px;border-width:1.5px}
+}
 </style>
 </head>
 <body>
@@ -260,7 +282,7 @@ body{top:0!important}
 
 <script>
 /* ---- media files: everything lives in the images/ and  folders ---- */
-const IMG={"skateboard-bon":"Character/skateboard-bon.png","boxing-bon":"Character/boxing-bon.png","chef-bon":"Character/chef-bon.png","general-bon":"Character/general-bon.png","mini-bon": "Character/mini-bon.png", "bon-saw": "Character/bon-saw.png", "mrbon-bee": "Character/mrbon-bee.png", "mrbon-toxic": "Character/MrBon-Toxic.png", "cartoon-bon": "Character/Cartoon-Bon.png", "bonsquad": "Character/BonSquad.png", "mrbon-galaxy": "Character/mrbon-galaxy.png", "no-results": "no-results.png", "mrbonai": "Character/mrbonai.png", "mrbon-studiox": "Character/mrbon-studiox.png", "super-massive-black-hole-bon": "Character/super-massive-black-hole-bon.png", "virus-head": "mrbon-virus-head.png", "moon-bon": "Character/moon-bon.png", "moon-blood-bon": "Character/moon-blood-bon.png", "mrbon-exe": "Character/mrbon-exe.png", "mrbon-exeller": "Character/mrbon-exeller.png", "mrbon-virus": "Character/mrbon-virus.png", "mrbon-smile": "Character/mrbon-smile.png", "panda-bon": "Character/panda-bon.png", "black-bon": "Character/black-bon.png", "mrbon": "Character/mrbon.png", "mrbons": "Character/mrbons.png", "mrbonv": "Character/mrbonv.png", "mrbonx": "Character/mrbonx.png", "polar-bon": "Character/polar-bon.png", "black-hole-bon": "Character/black-hole-bon.png", "mrbon-ghost": "Character/mrbon-ghost.png", "spooky-bon": "Character/spooky-bon.png", "festive-bon": "Character/festive-bon.png", "mrbon-shadow": "Character/mrbon-shadow.png", "mrbon-void": "Character/mrbon-void.png"};
+const IMG={"mrbon-plushie":"Character/mrbon-plushie.png","skateboard-bon":"Character/skateboard-bon.png","boxing-bon":"Character/boxing-bon.png","chef-bon":"Character/chef-bon.png","general-bon":"Character/general-bon.png","mini-bon": "Character/mini-bon.png", "bon-saw": "Character/bon-saw.png", "mrbon-bee": "Character/mrbon-bee.png", "mrbon-toxic": "Character/MrBon-Toxic.png", "cartoon-bon": "Character/Cartoon-Bon.png", "bonsquad": "Character/BonSquad.png", "mrbon-galaxy": "Character/mrbon-galaxy.png", "no-results": "no-results.png", "mrbonai": "Character/mrbonai.png", "mrbon-studiox": "Character/mrbon-studiox.png", "super-massive-black-hole-bon": "Character/super-massive-black-hole-bon.png", "virus-head": "mrbon-virus-head.png", "moon-bon": "Character/moon-bon.png", "moon-blood-bon": "Character/moon-blood-bon.png", "mrbon-exe": "Character/mrbon-exe.png", "mrbon-exeller": "Character/mrbon-exeller.png", "mrbon-virus": "Character/mrbon-virus.png", "mrbon-smile": "Character/mrbon-smile.png", "panda-bon": "Character/panda-bon.png", "black-bon": "Character/black-bon.png", "mrbon": "Character/mrbon.png", "mrbons": "Character/mrbons.png", "mrbonv": "Character/mrbonv.png", "mrbonx": "Character/mrbonx.png", "polar-bon": "Character/polar-bon.png", "black-hole-bon": "Character/black-hole-bon.png", "mrbon-ghost": "Character/mrbon-ghost.png", "spooky-bon": "Character/spooky-bon.png", "festive-bon": "Character/festive-bon.png", "mrbon-shadow": "Character/mrbon-shadow.png", "mrbon-void": "Character/mrbon-void.png"};
 const SCREAM="scream.mp3";
 const MEDIA={
 "virus-jump":{a:"virus-1-second-jumpscare.mp3",pk:[43, 100, 94, 87, 86, 93, 92, 92, 86, 92, 90, 91, 89, 90, 83, 93, 91, 83, 96, 94, 86, 92, 85, 88, 92, 93, 91, 83],d:1.4},
@@ -531,6 +553,13 @@ MrBonSTUDIOX represents the developer's creative identity across multiple platfo
 MrBon Toxic's glowing appearance and the subtle glow applied to affected players make his toxic abilities easy to recognize during gameplay.
 
 His combination of poisonous attacks, damage over time, and glowing visual effects makes him a distinctive and dangerous variant of MrBon.`},
+  {id:"b-mrbon-plushie",builtin:true,name:"MrBon Plushie",rarity:"Super Rare",photoURL:IMG["mrbon-plushie"],description:`MrBon Plushie is an unusual teddy bear sewn together from different pieces of old fabric.
+
+Despite his strange appearance, he is very kind and loves to hug. But don't underestimate him! Something unusual is hidden inside this little plush bear.
+
+# Ability
+
+When his health gets low (for example, 20/100), a protection appears and he automatically starts stitching himself up for up to 1 minute.`},
   {id:"b-cartoon-bon",builtin:true,name:"Cartoon Bon",rarity:"Super Rare",photoURL:IMG["cartoon-bon"],description:`Cartoon Bon is a cartoon-style version of MrBon. He is a funny, entertaining, and playful bear known for his humorous animations, dancing, and exaggerated movements.
 
 Unlike other MrBon variants, Cartoon Bon focuses more on entertainment and comedy than combat.
@@ -778,7 +807,18 @@ const io=new IntersectionObserver(es=>es.forEach(x=>{const t=x.target;t.classLis
   if(x.isIntersecting&&t.classList.contains("card"))t.classList.add("show");if(t._fx)t._fx.on=x.isIntersecting}),{rootMargin:"200px 0px"});
 
 /* ---- card photos: plain <img> from Character/*.png, loaded only when the card is near the screen ---- */
-function loadImg(i){if(i.getAttribute("src"))return;const s=i.dataset.src;i._r=0;i.onload=()=>i.classList.add("ld");i.onerror=()=>{if(i.getAttribute("src")&&!i._r){i._r=1;i.src=s+"?r="+Date.now()}};i.src=s}
+const TH=new Map(),thQ=[];let thBusy=0;
+async function mkThumb(src){
+  try{const r=await fetch(src);if(!r.ok)return null;const bm=await createImageBitmap(await r.blob(),{resizeWidth:380,resizeQuality:"medium"});
+    const c=document.createElement("canvas");c.width=bm.width;c.height=bm.height;c.getContext("2d").drawImage(bm,0,0);if(bm.close)bm.close();
+    const b=await new Promise(ok=>c.toBlob(ok,"image/webp",.86));c.width=c.height=0;return b?URL.createObjectURL(b):null}catch(e){return null}}
+function pumpTh(){while(thBusy<2&&thQ.length){const j=thQ.shift();thBusy++;mkThumb(j.src).then(u=>{if(u)TH.set(j.src,u);j.ok(u)}).then(()=>{thBusy--;pumpTh()})}}
+function thumb(src){return TH.has(src)?Promise.resolve(TH.get(src)):new Promise(ok=>{thQ.push({src,ok});pumpTh()})}
+function loadImg(i){if(i.getAttribute("src")||i._ld)return;const s=i.dataset.src;i._r=0;i._ld=1;
+  i.onload=()=>i.classList.add("ld");
+  i.onerror=()=>{if(!i.getAttribute("src"))return;i._r++;if(i._r===1)i.src=s;else if(i._r===2)i.src=s+"?r="+Date.now()};
+  thumb(s).then(u=>{i._ld=0;i.src=u||s})}
+function unloadImg(i){if(!i.getAttribute("src"))return;i.onload=i.onerror=null;i.classList.remove("ld");i.removeAttribute("src")}
 /* photos load when a card gets close to the screen and then stay (never hidden again) */
 function unloadImg(i){if(!i.getAttribute("src"))return;i.onload=i.onerror=null;i.classList.remove("ld");i.removeAttribute("src")}
 const pio=new IntersectionObserver(es=>es.forEach(x=>{if(!x.isIntersecting)return;const i=x.target.querySelector("img[data-src]");if(i)loadImg(i);pio.unobserve(x.target)}),{rootMargin:"700px 0px"});
@@ -859,7 +899,7 @@ function tick(ts){requestAnimationFrame(tick);if(document.hidden||!FX.length)ret
 requestAnimationFrame(tick);
 
 /* ---- gallery ---- */
-let term="",rf="",LIST=[],shown=0;const PAGE=6;
+let term="",rf="",LIST=[],shown=0;const PAGE=matchMedia("(max-width:520px)").matches?8:6;
 const mio=new IntersectionObserver(es=>{if(es.some(x=>x.isIntersecting))more()},{rootMargin:"600px"});
 function card(c){
   const d=document.createElement("div");d.className="card "+slug(c.rarity)+(c.fx?" "+c.fx:"");
