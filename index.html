@@ -197,6 +197,9 @@ body{top:0!important}
 #chefsay .cb span{font:900 clamp(22px,6.6vw,32px)/1.05 system-ui,"Segoe UI",Roboto,sans-serif;color:#000;letter-spacing:.2px}
 @keyframes chefwave2{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(3deg) translateY(-4px)}}
 @media (prefers-reduced-motion:reduce){#chefsay img,#chefsay .cb{transition:none}#chefsay.on img{animation:none}}
+
+.moreW{grid-column:1/-1;display:flex;justify-content:center;padding:8px 0 22px}
+.btn.more{min-width:220px;justify-content:center;font-size:17px;font-weight:800;padding:12px 26px}
 </style>
 </head>
 <body>
@@ -750,9 +753,9 @@ const io=new IntersectionObserver(es=>es.forEach(x=>{const t=x.target;t.classLis
 
 /* ---- card photos: plain <img> from Character/*.png, loaded only when the card is near the screen ---- */
 function loadImg(i){if(i.getAttribute("src"))return;const s=i.dataset.src;i._r=0;i.onload=()=>i.classList.add("ld");i.onerror=()=>{if(i.getAttribute("src")&&!i._r){i._r=1;i.src=s+"?r="+Date.now()}};i.src=s}
-/* photos exist only near the screen: they load when a card is within ~1 screen and are released when it is farther (frees memory, no lag) */
+/* photos load when a card gets close to the screen and then stay (never hidden again) */
 function unloadImg(i){if(!i.getAttribute("src"))return;i.onload=i.onerror=null;i.classList.remove("ld");i.removeAttribute("src")}
-const pio=new IntersectionObserver(es=>es.forEach(x=>{const i=x.target.querySelector("img[data-src]");if(!i)return;x.isIntersecting?loadImg(i):unloadImg(i)}),{rootMargin:"700px 0px"});
+const pio=new IntersectionObserver(es=>es.forEach(x=>{if(!x.isIntersecting)return;const i=x.target.querySelector("img[data-src]");if(i)loadImg(i);pio.unobserve(x.target)}),{rootMargin:"700px 0px"});
 
 /* ---- canvas effects for BonULTRA cards ---- */
 const FX=[];
@@ -830,7 +833,7 @@ function tick(ts){requestAnimationFrame(tick);if(document.hidden||!FX.length)ret
 requestAnimationFrame(tick);
 
 /* ---- gallery ---- */
-let term="",rf="",LIST=[],shown=0;const PAGE=12;
+let term="",rf="",LIST=[],shown=0;const PAGE=6;
 const mio=new IntersectionObserver(es=>{if(es.some(x=>x.isIntersecting))more()},{rootMargin:"600px"});
 function card(c){
   const d=document.createElement("div");d.className="card "+slug(c.rarity)+(c.fx?" "+c.fx:"");
@@ -854,9 +857,14 @@ function build(){
   more();
 }
 function more(){
-  const g=$("grid"),s=$("sent");if(s)s.remove();
-  LIST.slice(shown,shown+PAGE).forEach(c=>g.appendChild(card(c)));shown+=PAGE;
-  if(shown<LIST.length){const t=document.createElement("div");t.id="sent";t.style.cssText="grid-column:1/-1;height:1px";g.appendChild(t);mio.observe(t)}
+  /* shows PAGE (6) more cards each time "Scroll more" is pressed; search and rarity filters always work on ALL characters */
+  const g=$("grid"),w0=$("sent");if(w0)w0.remove();
+  LIST.slice(shown,shown+PAGE).forEach(c=>g.appendChild(card(c)));shown=Math.min(shown+PAGE,LIST.length);
+  if(shown<LIST.length){
+    const w=document.createElement("div");w.id="sent";w.className="moreW";
+    const b=document.createElement("button");b.type="button";b.className="btn more";b.append("Scroll more ");
+    const n=document.createElement("span");n.className="notranslate";n.textContent="("+shown+" / "+LIST.length+")";b.appendChild(n);
+    b.onclick=()=>more();w.appendChild(b);g.appendChild(w)}
   if(TL!=="en")setTimeout(()=>trApply(g),0);
 }
 $("q").addEventListener("input",e=>{term=e.target.value;build()});
