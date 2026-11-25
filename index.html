@@ -222,6 +222,10 @@ body{top:0!important}
   .meta{padding:6px 5px 7px}.nm{font-size:11px;line-height:1.2}.rb{font-size:9px;padding:1px 6px;margin-top:4px}
   .r-bonmax .rb,.r-bonultra .rb{padding:0 6px;border-width:1.5px}
 }
+
+.phs{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 2px}
+.phs button{padding:6px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:#2b3160;color:#fff;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.phs button.on{background:#fff;color:#10101a;border-color:#fff}
 </style>
 </head>
 <body>
@@ -282,7 +286,7 @@ body{top:0!important}
 
 <script>
 /* ---- media files: everything lives in the images/ and  folders ---- */
-const IMG={"mrbon-plushie":"Character/mrbon-plushie.png","skateboard-bon":"Character/skateboard-bon.png","boxing-bon":"Character/boxing-bon.png","chef-bon":"Character/chef-bon.png","general-bon":"Character/general-bon.png","mini-bon": "Character/mini-bon.png", "bon-saw": "Character/bon-saw.png", "mrbon-bee": "Character/mrbon-bee.png", "mrbon-toxic": "Character/MrBon-Toxic.png", "cartoon-bon": "Character/Cartoon-Bon.png", "bonsquad": "Character/BonSquad.png", "mrbon-galaxy": "Character/mrbon-galaxy.png", "no-results": "no-results.png", "mrbonai": "Character/mrbonai.png", "mrbon-studiox": "Character/mrbon-studiox.png", "super-massive-black-hole-bon": "Character/super-massive-black-hole-bon.png", "virus-head": "mrbon-virus-head.png", "moon-bon": "Character/moon-bon.png", "moon-blood-bon": "Character/moon-blood-bon.png", "mrbon-exe": "Character/mrbon-exe.png", "mrbon-exeller": "Character/mrbon-exeller.png", "mrbon-virus": "Character/mrbon-virus.png", "mrbon-smile": "Character/mrbon-smile.png", "panda-bon": "Character/panda-bon.png", "black-bon": "Character/black-bon.png", "mrbon": "Character/mrbon.png", "mrbons": "Character/mrbons.png", "mrbonv": "Character/mrbonv.png", "mrbonx": "Character/mrbonx.png", "polar-bon": "Character/polar-bon.png", "black-hole-bon": "Character/black-hole-bon.png", "mrbon-ghost": "Character/mrbon-ghost.png", "spooky-bon": "Character/spooky-bon.png", "festive-bon": "Character/festive-bon.png", "mrbon-shadow": "Character/mrbon-shadow.png", "mrbon-void": "Character/mrbon-void.png"};
+const IMG={"robon-phase-1-5":"Character/robon-phase-1-5.png","mrbon-plushie":"Character/mrbon-plushie.png","skateboard-bon":"Character/skateboard-bon.png","boxing-bon":"Character/boxing-bon.png","chef-bon":"Character/chef-bon.png","general-bon":"Character/general-bon.png","mini-bon": "Character/mini-bon.png", "bon-saw": "Character/bon-saw.png", "mrbon-bee": "Character/mrbon-bee.png", "mrbon-toxic": "Character/MrBon-Toxic.png", "cartoon-bon": "Character/Cartoon-Bon.png", "bonsquad": "Character/BonSquad.png", "mrbon-galaxy": "Character/mrbon-galaxy.png", "no-results": "no-results.png", "mrbonai": "Character/mrbonai.png", "mrbon-studiox": "Character/mrbon-studiox.png", "super-massive-black-hole-bon": "Character/super-massive-black-hole-bon.png", "virus-head": "mrbon-virus-head.png", "moon-bon": "Character/moon-bon.png", "moon-blood-bon": "Character/moon-blood-bon.png", "mrbon-exe": "Character/mrbon-exe.png", "mrbon-exeller": "Character/mrbon-exeller.png", "mrbon-virus": "Character/mrbon-virus.png", "mrbon-smile": "Character/mrbon-smile.png", "panda-bon": "Character/panda-bon.png", "black-bon": "Character/black-bon.png", "mrbon": "Character/mrbon.png", "mrbons": "Character/mrbons.png", "mrbonv": "Character/mrbonv.png", "mrbonx": "Character/mrbonx.png", "polar-bon": "Character/polar-bon.png", "black-hole-bon": "Character/black-hole-bon.png", "mrbon-ghost": "Character/mrbon-ghost.png", "spooky-bon": "Character/spooky-bon.png", "festive-bon": "Character/festive-bon.png", "mrbon-shadow": "Character/mrbon-shadow.png", "mrbon-void": "Character/mrbon-void.png"};
 const SCREAM="scream.mp3";
 const MEDIA={
 "virus-jump":{a:"virus-1-second-jumpscare.mp3",pk:[43, 100, 94, 87, 86, 93, 92, 92, 86, 92, 90, 91, 89, 90, 83, 93, 91, 83, 96, 94, 86, 92, 85, 88, 92, 93, 91, 83],d:1.4},
@@ -784,6 +788,12 @@ Chef Bon is extremely fast and powerful, making him a serious threat to anyone w
 # Personality
 
 Normally focused on delivering orders, but when he becomes insane, he turns into a terrifying and uncontrollable monster.`},
+  {id:"b-robon",builtin:true,name:"Robon Phase 1 and 1.5",rarity:"Secret",photoURL:IMG["robon-phase-1-5"],aka:"Robon Phase 1 Phase 1.5 Phase 2 Phase 3",description:"",
+    phases:[
+      {t:"Phase 1",n:"Robon Phase 1",img:"Character/robon-phase-1.png",d:"@robon.txt?v=1"},
+      {t:"Phase 1.5",n:"Robon Phase 1.5",img:IMG["robon-phase-1-5"],d:"@robon.txt?v=1"},
+      {t:"Phase 2",n:"Robon Phase 2",img:"no-results.png",d:"Information not found"},
+      {t:"Phase 3",n:"Robon Phase 3",img:"no-results.png",d:"Information not found"}]},
   {id:"b-general-bon",builtin:true,name:"General Bon",rarity:"BonMax",photoURL:IMG["general-bon"],description:`General Bon is a metallic robot with powerful energy weapons and high-tech abilities.
 
 # Appearance
@@ -913,7 +923,7 @@ function card(c){
   m.append(n,r);inn.append(ph,m);inn.onclick=()=>detail(c);const ring=document.createElement("i");ring.className="ring";d.append(ring,inn);io.observe(d);pio.observe(d);return d}
 function build(){
   const q=term.trim().toLowerCase();
-  LIST=ALL.filter(c=>(!rf||c.rarity===rf)&&(!q||(c.name+" "+c.rarity).toLowerCase().includes(q)));
+  LIST=ALL.filter(c=>(!rf||c.rarity===rf)&&(!q||(c.name+" "+c.rarity+" "+(c.aka||"")).toLowerCase().includes(q)));
   const g=$("grid");g.innerHTML="";FX.length=0;mio.disconnect();shown=0;
   $("cnt").textContent=(q||rf?"Found: ":"Total: ")+LIST.length;
   if(!LIST.length){
@@ -952,6 +962,7 @@ function rich(text){
     const p=document.createElement("p");
     blk.split(/(https?:\/\/[^\s]+)/).forEach(s=>{if(/^https?:\/\//.test(s)){const a=document.createElement("a");a.href=s;a.textContent=s;a.target="_blank";a.rel="noopener";a.style.color="#8fc2ff";p.appendChild(a)}else p.appendChild(document.createTextNode(s))});box.appendChild(p)});
   return box}
+const PHT=new Map();
 function detail(c){
   if(c&&c.id==="b-chef-bon"&&window.chefSay)window.chefSay();
   const b=$("det");b.innerHTML="";
@@ -959,7 +970,20 @@ function detail(c){
   const h=document.createElement("h3");h.textContent=c.name;h.className="notranslate";h.style.margin="14px 0 6px";
   const r=document.createElement("span");r.className="chip notranslate t-"+c.rarity.toLowerCase().replace(/\s+/g,"-");r.textContent=c.rarity;r.style.display="inline-block";
   const x=document.createElement("div");x.className="row";x.innerHTML='<button class="btn">Close</button>';x.firstChild.onclick=()=>hide("ovDet");
-  b.append(im,h,r,rich(c.description||""));if(c.media)b.appendChild(mediaBox(c.media));b.append(x);
+  let dsc=null;
+  if(c.phases){
+    const tabs=document.createElement("div");tabs.className="phs notranslate";dsc=document.createElement("div");
+    const bs=c.phases.map((p,k)=>{const t=document.createElement("button");t.type="button";t.textContent=p.t;t.onclick=()=>setPhase(k);tabs.appendChild(t);return t});
+    const setPhase=k=>{const p=c.phases[k];dsc._k=k;bs.forEach((t,j)=>t.classList.toggle("on",j===k));
+      h.textContent=p.n;im.alt=p.n;im.onerror=()=>{im.onerror=null;im.src="no-results.png"};im.src=p.img;
+      im.style.background=p.img==="no-results.png"?"rgba(255,255,255,.06)":"";
+      if(p.d.charAt(0)==="@"){const f=p.d.slice(1);
+        if(PHT.has(f)){dsc.replaceChildren(rich(PHT.get(f)));if(TL!=="en")trApply(dsc)}
+        else{dsc.textContent="Loading…";fetch(f).then(r=>r.ok?r.text():Promise.reject()).then(t=>{PHT.set(f,t);if(dsc._k===k){dsc.replaceChildren(rich(t));if(TL!=="en")trApply(dsc)}}).catch(()=>{if(dsc._k===k)dsc.textContent="Could not load the description. Check your connection."})}
+      }else{dsc.replaceChildren(rich(p.d));if(TL!=="en")trApply(dsc)}};
+    b.append(im,tabs,h,r,dsc);setPhase(1);
+  }else b.append(im,h,r,rich(c.description||""));
+  if(c.media)b.appendChild(mediaBox(c.media));b.append(x);
   if(c.rarity==="BonULTRA"&&c.fx!=="galaxy")im.style.background="#000";
   show("ovDet");armScare(c);if(TL!=="en")trApply(b);
 }
