@@ -215,7 +215,10 @@ body{top:0!important}
 .box{background:#161a38;box-shadow:0 20px 50px rgba(0,0,0,.55)}
 .ov{background:rgba(6,8,24,.85);-webkit-backdrop-filter:none;backdrop-filter:none}
 .card::after{box-shadow:0 0 10px var(--g,transparent)}
-.card,.card *,.card::before,.card::after,.card *::before,.card *::after{animation:none!important}
+.card:not(.glmax),.card:not(.glmax) *,.card:not(.glmax)::before,.card:not(.glmax)::after,.card:not(.glmax) *::before,.card:not(.glmax) *::after{animation:none!important}
+.card.glmax .ring,.card.glmax .ring::before,.card.glmax .ph img,.card.glmax .meta,.card.glmax .meta::after,.card.glmax .nm,.card.glmax .rb,.card.glmax::before,.card.glmax::after{animation:none!important}
+.card.glmax{animation:gl 5s infinite steps(1)}.card.glmax .ph{animation:gl2 5s infinite steps(1)}
+.card.glmax .nm{text-shadow:2px 0 #0ff,-2px 0 #f0f}
 @media(max-width:520px){
   .grid{grid-template-columns:repeat(4,1fr);gap:6px}
   .card{border-radius:12px;padding:2px}.ring,.card::after{border-radius:12px}.in{border-radius:10px}
@@ -286,7 +289,7 @@ body{top:0!important}
 
 <script>
 /* ---- media files: everything lives in the images/ and  folders ---- */
-const IMG={"robon-phase-1-5":"Character/robon-phase-1-5.png","mrbon-plushie":"Character/mrbon-plushie.png","skateboard-bon":"Character/skateboard-bon.png","boxing-bon":"Character/boxing-bon.png","chef-bon":"Character/chef-bon.png","general-bon":"Character/general-bon.png","mini-bon": "Character/mini-bon.png", "bon-saw": "Character/bon-saw.png", "mrbon-bee": "Character/mrbon-bee.png", "mrbon-toxic": "Character/MrBon-Toxic.png", "cartoon-bon": "Character/Cartoon-Bon.png", "bonsquad": "Character/BonSquad.png", "mrbon-galaxy": "Character/mrbon-galaxy.png", "no-results": "no-results.png", "mrbonai": "Character/mrbonai.png", "mrbon-studiox": "Character/mrbon-studiox.png", "super-massive-black-hole-bon": "Character/super-massive-black-hole-bon.png", "virus-head": "mrbon-virus-head.png", "moon-bon": "Character/moon-bon.png", "moon-blood-bon": "Character/moon-blood-bon.png", "mrbon-exe": "Character/mrbon-exe.png", "mrbon-exeller": "Character/mrbon-exeller.png", "mrbon-virus": "Character/mrbon-virus.png", "mrbon-smile": "Character/mrbon-smile.png", "panda-bon": "Character/panda-bon.png", "black-bon": "Character/black-bon.png", "mrbon": "Character/mrbon.png", "mrbons": "Character/mrbons.png", "mrbonv": "Character/mrbonv.png", "mrbonx": "Character/mrbonx.png", "polar-bon": "Character/polar-bon.png", "black-hole-bon": "Character/black-hole-bon.png", "mrbon-ghost": "Character/mrbon-ghost.png", "spooky-bon": "Character/spooky-bon.png", "festive-bon": "Character/festive-bon.png", "mrbon-shadow": "Character/mrbon-shadow.png", "mrbon-void": "Character/mrbon-void.png"};
+const IMG={"mrbon-glitch":"Character/mrbon-glitch.png","alien-bon":"Character/alien-bon.png","robon-phase-1-5":"Character/robon-phase-1-5.png","mrbon-plushie":"Character/mrbon-plushie.png","skateboard-bon":"Character/skateboard-bon.png","boxing-bon":"Character/boxing-bon.png","chef-bon":"Character/chef-bon.png","general-bon":"Character/general-bon.png","mini-bon": "Character/mini-bon.png", "bon-saw": "Character/bon-saw.png", "mrbon-bee": "Character/mrbon-bee.png", "mrbon-toxic": "Character/MrBon-Toxic.png", "cartoon-bon": "Character/Cartoon-Bon.png", "bonsquad": "Character/BonSquad.png", "mrbon-galaxy": "Character/mrbon-galaxy.png", "no-results": "no-results.png", "mrbonai": "Character/mrbonai.png", "mrbon-studiox": "Character/mrbon-studiox.png", "super-massive-black-hole-bon": "Character/super-massive-black-hole-bon.png", "virus-head": "mrbon-virus-head.png", "moon-bon": "Character/moon-bon.png", "moon-blood-bon": "Character/moon-blood-bon.png", "mrbon-exe": "Character/mrbon-exe.png", "mrbon-exeller": "Character/mrbon-exeller.png", "mrbon-virus": "Character/mrbon-virus.png", "mrbon-smile": "Character/mrbon-smile.png", "panda-bon": "Character/panda-bon.png", "black-bon": "Character/black-bon.png", "mrbon": "Character/mrbon.png", "mrbons": "Character/mrbons.png", "mrbonv": "Character/mrbonv.png", "mrbonx": "Character/mrbonx.png", "polar-bon": "Character/polar-bon.png", "black-hole-bon": "Character/black-hole-bon.png", "mrbon-ghost": "Character/mrbon-ghost.png", "spooky-bon": "Character/spooky-bon.png", "festive-bon": "Character/festive-bon.png", "mrbon-shadow": "Character/mrbon-shadow.png", "mrbon-void": "Character/mrbon-void.png"};
 const SCREAM="scream.mp3";
 const MEDIA={
 "virus-jump":{a:"virus-1-second-jumpscare.mp3",pk:[43, 100, 94, 87, 86, 93, 92, 92, 86, 92, 90, 91, 89, 90, 83, 93, 91, 83, 96, 94, 86, 92, 85, 88, 92, 93, 91, 83],d:1.4},
@@ -383,6 +386,15 @@ const BUILTIN=[MRBON,
   {id:"b-moon-bon",builtin:true,name:"Moon Bon",rarity:"BonMax",photoURL:IMG["moon-bon"],description:`Unknown.`},
   {id:"b-moon-blood-bon",builtin:true,name:"Moon Blood Bon",rarity:"BonMax",photoURL:IMG["moon-blood-bon"],description:`Unknown.`},
   {id:"b-panda-bon",builtin:true,name:"Panda Bon",rarity:"Rare",photoURL:IMG["panda-bon"],description:`Unknown.`},
+  {id:"b-alien-bon",builtin:true,name:"Alien Bon",rarity:"Epic",photoURL:IMG["alien-bon"],description:`Alien Bon is a mysterious alien creature with the ability to control the brains of other players.
+
+# Abilities
+
+- Can fully take over a player's brain for 10 seconds.
+- After using the ability, he needs 20 seconds to recharge.
+- There is a 10% chance that the player will die completely because of the effect on the brain.
+
+Alien Bon is a serious threat to everyone who falls under his control.`},
   {id:"b-mrbon-smile",builtin:true,name:"MrBon Smile",rarity:"Epic",photoURL:IMG["mrbon-smile"],description:`A smiling MrBon who appears in stores every September 19.`},
   {id:"b-mrbon-exe",builtin:true,name:"MrBon.exe",rarity:"Secret",photoURL:IMG["mrbon-exe"],description:`An .exe program that looks like an application from a computer. It can become stronger if it transforms further. Nothing else is known.`},
   {id:"b-mrbon-exeller",builtin:true,name:"MrBon Exeller",rarity:"Secret",photoURL:IMG["mrbon-exeller"],description:`The one who wears a broken smiley face. His team is MrBon.exe.`},
@@ -794,6 +806,11 @@ Normally focused on delivering orders, but when he becomes insane, he turns into
       {t:"Phase 1.5",n:"Robon Phase 1.5",img:IMG["robon-phase-1-5"],d:"@robon.txt?v=1"},
       {t:"Phase 2",n:"Robon Phase 2",img:"no-results.png",d:"Information not found"},
       {t:"Phase 3",n:"Robon Phase 3",img:"no-results.png",d:"Information not found"}]},
+  {id:"b-mrbon-glitch",builtin:true,name:"MrBon Glitch",rarity:"BonMax",fx:"glmax",photoURL:IMG["mrbon-glitch"],description:`MrBon Glitch is an extremely powerful glitch that can infect almost any items, players and other objects.
+
+Its presence can cause severe lag, dropping the game's performance to at least 20 FPS.
+
+On very weak devices the consequences can be even more serious: the game may freeze, crash or close automatically.`},
   {id:"b-general-bon",builtin:true,name:"General Bon",rarity:"BonMax",photoURL:IMG["general-bon"],description:`General Bon is a metallic robot with powerful energy weapons and high-tech abilities.
 
 # Appearance
