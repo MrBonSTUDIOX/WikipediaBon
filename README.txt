@@ -2,7 +2,7 @@
 
 **The Encyclopedia of the MrBon Universe**
 
-Official website: [https://wikipediabon.com/]
+Official website: https://wikipediabon.com/
 
 **WikipediaBon** is an evolving encyclopedia dedicated to the characters, stories, and universe of **MrBon**, created by **Asadullah Elchoev** under **MrBon Studio X**.
 
@@ -101,7 +101,7 @@ The characters and stories can become the foundation for future games and experi
 
 ## 🔗 Official Links
 
-- **Website:** [https://wikipediabon.com/](https://wikipediabon.com/)
+- **Website:** https://wikipediabon.com/
 
 ---
 
