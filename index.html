@@ -229,6 +229,16 @@ body{top:0!important}
 .phs{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 2px}
 .phs button{padding:6px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:#2b3160;color:#fff;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
 .phs button.on{background:#fff;color:#10101a;border-color:#fff}
+
+svg.clk{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.clkw{position:relative}.clkw img{display:block;width:100%}
+.ph svg.clk{opacity:0;transition:opacity .25s}.ph img.ld~svg.clk{opacity:1}
+.card.mrstar{--c:#ffd400;--g:#2f6bffcc}
+.card.mrstar .ring::before{background:linear-gradient(90deg,#ffd400,#2f6bff,#ffd400,#2f6bff,#ffd400,#2f6bff,#ffd400)}
+.card.mrstar .ph{isolation:isolate}
+.card.mrstar .ph img{position:relative;z-index:1;mix-blend-mode:multiply}
+.card.mrstar .nm{background:linear-gradient(90deg,#ffd400,#6fb3ff,#ffd400);-webkit-background-clip:text;background-clip:text;color:transparent}
+.card.mrstar .rb{background:linear-gradient(90deg,#ffd400,#8cc4ff,#ffd400);color:#06122e}
 </style>
 </head>
 <body>
@@ -289,7 +299,7 @@ body{top:0!important}
 
 <script>
 /* ---- media files: everything lives in the images/ and  folders ---- */
-const IMG={"mrbon-glitch":"Character/mrbon-glitch.png","alien-bon":"Character/alien-bon.png","robon-phase-1-5":"Character/robon-phase-1-5.png","mrbon-plushie":"Character/mrbon-plushie.png","skateboard-bon":"Character/skateboard-bon.png","boxing-bon":"Character/boxing-bon.png","chef-bon":"Character/chef-bon.png","general-bon":"Character/general-bon.png","mini-bon": "Character/mini-bon.png", "bon-saw": "Character/bon-saw.png", "mrbon-bee": "Character/mrbon-bee.png", "mrbon-toxic": "Character/MrBon-Toxic.png", "cartoon-bon": "Character/Cartoon-Bon.png", "bonsquad": "Character/BonSquad.png", "mrbon-galaxy": "Character/mrbon-galaxy.png", "no-results": "no-results.png", "mrbonai": "Character/mrbonai.png", "mrbon-studiox": "Character/mrbon-studiox.png", "super-massive-black-hole-bon": "Character/super-massive-black-hole-bon.png", "virus-head": "mrbon-virus-head.png", "moon-bon": "Character/moon-bon.png", "moon-blood-bon": "Character/moon-blood-bon.png", "mrbon-exe": "Character/mrbon-exe.png", "mrbon-exeller": "Character/mrbon-exeller.png", "mrbon-virus": "Character/mrbon-virus.png", "mrbon-smile": "Character/mrbon-smile.png", "panda-bon": "Character/panda-bon.png", "black-bon": "Character/black-bon.png", "mrbon": "Character/mrbon.png", "mrbons": "Character/mrbons.png", "mrbonv": "Character/mrbonv.png", "mrbonx": "Character/mrbonx.png", "polar-bon": "Character/polar-bon.png", "black-hole-bon": "Character/black-hole-bon.png", "mrbon-ghost": "Character/mrbon-ghost.png", "spooky-bon": "Character/spooky-bon.png", "festive-bon": "Character/festive-bon.png", "mrbon-shadow": "Character/mrbon-shadow.png", "mrbon-void": "Character/mrbon-void.png"};
+const IMG={"clock-bon":"Character/clock-bon.png","mrbon-star":"Character/mrbon-star.png","plant-bon":"Character/plant-bon.png","mrbon-glitch":"Character/mrbon-glitch.png","alien-bon":"Character/alien-bon.png","robon-phase-1-5":"Character/robon-phase-1-5.png","mrbon-plushie":"Character/mrbon-plushie.png","skateboard-bon":"Character/skateboard-bon.png","boxing-bon":"Character/boxing-bon.png","chef-bon":"Character/chef-bon.png","general-bon":"Character/general-bon.png","mini-bon": "Character/mini-bon.png", "bon-saw": "Character/bon-saw.png", "mrbon-bee": "Character/mrbon-bee.png", "mrbon-toxic": "Character/MrBon-Toxic.png", "cartoon-bon": "Character/Cartoon-Bon.png", "bonsquad": "Character/BonSquad.png", "mrbon-galaxy": "Character/mrbon-galaxy.png", "no-results": "no-results.png", "mrbonai": "Character/mrbonai.png", "mrbon-studiox": "Character/mrbon-studiox.png", "super-massive-black-hole-bon": "Character/super-massive-black-hole-bon.png", "virus-head": "mrbon-virus-head.png", "moon-bon": "Character/moon-bon.png", "moon-blood-bon": "Character/moon-blood-bon.png", "mrbon-exe": "Character/mrbon-exe.png", "mrbon-exeller": "Character/mrbon-exeller.png", "mrbon-virus": "Character/mrbon-virus.png", "mrbon-smile": "Character/mrbon-smile.png", "panda-bon": "Character/panda-bon.png", "black-bon": "Character/black-bon.png", "mrbon": "Character/mrbon.png", "mrbons": "Character/mrbons.png", "mrbonv": "Character/mrbonv.png", "mrbonx": "Character/mrbonx.png", "polar-bon": "Character/polar-bon.png", "black-hole-bon": "Character/black-hole-bon.png", "mrbon-ghost": "Character/mrbon-ghost.png", "spooky-bon": "Character/spooky-bon.png", "festive-bon": "Character/festive-bon.png", "mrbon-shadow": "Character/mrbon-shadow.png", "mrbon-void": "Character/mrbon-void.png"};
 const SCREAM="scream.mp3";
 const MEDIA={
 "virus-jump":{a:"virus-1-second-jumpscare.mp3",pk:[43, 100, 94, 87, 86, 93, 92, 92, 86, 92, 90, 91, 89, 90, 83, 93, 91, 83, 96, 94, 86, 92, 85, 88, 92, 93, 91, 83],d:1.4},
@@ -811,6 +821,31 @@ Normally focused on delivering orders, but when he becomes insane, he turns into
 Its presence can cause severe lag, dropping the game's performance to at least 20 FPS.
 
 On very weak devices the consequences can be even more serious: the game may freeze, crash or close automatically.`},
+  {id:"b-clock-bon",builtin:true,name:"Clock Bon",rarity:"Mythic",clock:true,photoURL:IMG["clock-bon"],description:`# Ability: Time Stop
+
+Clock Bon can stop time across the entire map for 10 seconds. During this time, everything on the map is frozen.
+
+Cooldown: 40 seconds.`},
+  {id:"b-plant-bon",builtin:true,name:"Plant Bon",rarity:"Mythic",photoURL:IMG["plant-bon"],description:`Plant Bon carries an enormous Venus flytrap plant in his hand.
+
+The plant has long, toxic parts that can attack enemies.
+
+# Ability: Toxic Bite
+
+Plant Bon attacks with his giant Venus flytrap, dealing 40% damage.
+
+The poison continues damaging the target for 10 seconds.
+
+Poison Damage: -3 HP per second for 10 seconds.`},
+  {id:"b-mrbon-star",builtin:true,name:"MrBon Star",rarity:"Developer",fx:"mrstar",photoURL:IMG["mrbon-star"],description:`MrBon Star is an exclusive character that can only be obtained using a special promo code. The promo code is available to players who have paid $20.
+
+# Ability: Falling Star
+
+MrBon Star summons a beautiful falling star that crashes down and deals massive damage.
+
+Damage: 40%, 50%, or 75%.
+
+The ability also creates a beautiful star effect.`},
   {id:"b-general-bon",builtin:true,name:"General Bon",rarity:"BonMax",photoURL:IMG["general-bon"],description:`General Bon is a metallic robot with powerful energy weapons and high-tech abilities.
 
 # Appearance
@@ -851,17 +886,42 @@ function unloadImg(i){if(!i.getAttribute("src"))return;i.onload=i.onerror=null;i
 const pio=new IntersectionObserver(es=>es.forEach(x=>{if(!x.isIntersecting)return;const i=x.target.querySelector("img[data-src]");if(i)loadImg(i);pio.unobserve(x.target)}),{rootMargin:"700px 0px"});
 
 /* ---- canvas effects for BonULTRA cards ---- */
+/* ---- Clock Bon: real local time drawn on his face (HH:MM), updates every minute ---- */
+function nowHM(){const d=new Date();return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")}
+function clockSvg(){const NS="http://www.w3.org/2000/svg",v=document.createElementNS(NS,"svg");
+  v.setAttribute("viewBox","0 0 1659 2212");v.setAttribute("preserveAspectRatio","none");v.setAttribute("class","clk");v.setAttribute("aria-hidden","true");
+  const t=document.createElementNS(NS,"text");
+  [["class","ckt"],["x","478"],["y","580"],["textLength","722"],["lengthAdjust","spacingAndGlyphs"],["fill","#ffff00"],["font-size","276"],["font-weight","900"],["font-family","'Segoe UI',Roboto,Arial,sans-serif"]].forEach(a=>t.setAttribute(a[0],a[1]));
+  t.textContent=nowHM();v.appendChild(t);return v}
+function clockWrap(im){const w=document.createElement("div");w.className="clkw";const v=clockSvg();v.style.opacity=0;v.style.transition="opacity .25s";
+  const on=()=>{v.style.opacity=1};im.addEventListener("load",on);if(im.complete&&im.naturalWidth)on();w.append(im,v);return w}
+setInterval(()=>{if(document.hidden)return;const v=nowHM();document.querySelectorAll(".ckt").forEach(t=>{if(t.textContent!==v)t.textContent=v})},1000);
 const FX=[];
 const FXO={bh:{x:.26,y:.8,core:.1,rmax:.7,tilt:.3,n:70,spd:1.7},gal:{x:.74,y:.72,core:.085,rmax:.34,tilt:.42,n:110,spd:1.5}};
 const GP=["59,107,255","95,208,255","255,95,208","160,75,255"],VC=["95,45,170","35,14,66","150,110,215","70,30,130"];
 function spawn(o,init){const k=Math.pow(Math.random(),1.7);return{a:Math.random()*6.283,r:init?1.1+k*(o.rmax/o.core-1.1):(o.rmax/o.core)*(.75+Math.random()*.25),s:.6+Math.random()*.8,l:.45+Math.random()*.55,w:.8+Math.random()*1.6,ci:Math.floor(Math.random()*4)}}
 function puff(init){return{x:Math.random(),y:init?Math.random()*1.2:1.05+Math.random()*.15,r:.2+Math.random()*.2,g:.02+Math.random()*.03,v:.05+Math.random()*.06,am:.5+Math.random()*.3,ph:Math.random()*6.28,w:.5+Math.random(),dx:.04+Math.random()*.05,c:VC[Math.floor(Math.random()*4)]}}
 function addFx(ph,kind){
-  const cv=document.createElement("canvas");cv.className="bhc";ph.appendChild(cv);
+  const cv=document.createElement("canvas");cv.className="bhc";if(kind==="star")ph.insertBefore(cv,ph.firstChild);else ph.appendChild(cv);
   const f={cv,c:cv.getContext("2d"),kind,o:FXO[kind],t:0,on:true,nx:1.2,wv:[],P:[],S:[]};
   if(f.o)for(let i=0;i<f.o.n;i++)f.P.push(spawn(f.o,true));
   if(kind==="void"){for(let i=0;i<16;i++)f.S.push(puff(true));f.nx=.8}
+  if(kind==="star")for(let i=0;i<8;i++)f.S.push(newStar(true));
   cv._fx=f;FX.push(f);io.observe(cv);
+}
+function newStar(init){return{x:Math.random()*1.3,y:init?Math.random()*1.1:-.12-Math.random()*.3,v:.3+Math.random()*.24,vx:-(.1+Math.random()*.12),r:.026+Math.random()*.02,y2:Math.random()<.5}}
+function starShape(c,x,y,r,rot){c.beginPath();for(let i=0;i<10;i++){const a=rot+i*Math.PI/5-Math.PI/2,k=i%2?r*.45:r;c.lineTo(x+Math.cos(a)*k,y+Math.sin(a)*k)}c.closePath()}
+function starDraw(f,dt){
+  const z=fit(f);if(!z)return;const{W,H,d}=z,c=f.c;f.t+=dt;
+  const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,"#8fc8ff");g.addColorStop(1,"#fff1a6");c.fillStyle=g;c.fillRect(0,0,W,H);
+  const cx=W/2,cy=H*.46,R=Math.hypot(W,H),n=16,a0=f.t*.35;
+  for(let i=0;i<n;i++){const a=a0+i*6.2832/n,b=a+3.1416/n;c.beginPath();c.moveTo(cx,cy);c.lineTo(cx+Math.cos(a)*R,cy+Math.sin(a)*R);c.lineTo(cx+Math.cos(b)*R,cy+Math.sin(b)*R);c.closePath();c.fillStyle=i%2?"rgba(0,100,255,.3)":"rgba(255,200,0,.36)";c.fill()}
+  c.lineWidth=1.4*d;for(let i=0;i<28;i++){const a=-f.t*.7+i*6.2832/28;c.strokeStyle=i%2?"rgba(255,255,255,.75)":"rgba(0,80,255,.4)";c.beginPath();c.moveTo(cx+Math.cos(a)*W*.1,cy+Math.sin(a)*W*.1);c.lineTo(cx+Math.cos(a)*R,cy+Math.sin(a)*R);c.stroke()}
+  for(const s of f.S){s.y+=s.v*dt;s.x+=s.vx*dt;if(s.y>1.12||s.x<-.15)Object.assign(s,newStar(false),{x:.2+Math.random()*1.1});
+    const px=s.x*W,py=s.y*H,tx=-s.vx/s.v,L=H*.2,col=s.y2?"255,196,0":"20,100,255";
+    const tg=c.createLinearGradient(px,py,px+tx*L,py-L);tg.addColorStop(0,"rgba("+col+",.8)");tg.addColorStop(1,"rgba("+col+",0)");
+    c.strokeStyle=tg;c.lineWidth=s.r*W*.5;c.lineCap="round";c.beginPath();c.moveTo(px,py);c.lineTo(px+tx*L,py-L);c.stroke();
+    c.fillStyle="rgb("+col+")";starShape(c,px,py,s.r*W,f.t*2+s.x*9);c.fill()}
 }
 function fit(f){const d=Math.min(devicePixelRatio||1,1.5),W=Math.round(f.cv.clientWidth*d),H=Math.round(f.cv.clientHeight*d);
   if(!W||!H)return null;if(f.cv.width!==W||f.cv.height!==H){f.cv.width=W;f.cv.height=H}return{W,H,d}}
@@ -922,7 +982,7 @@ function voidDraw(f,dt){
 }
 let last=0;
 function tick(ts){requestAnimationFrame(tick);if(document.hidden||!FX.length)return;const dt=(ts-last)/1000;if(dt<.048)return;last=ts;const d=reduced?0:Math.min(dt,.05);
-  for(const f of FX)if(f.on)(f.kind==="bh"?bhDraw:f.kind==="gal"?galDraw:voidDraw)(f,d)}
+  for(const f of FX)if(f.on)(f.kind==="bh"?bhDraw:f.kind==="gal"?galDraw:f.kind==="star"?starDraw:voidDraw)(f,d)}
 requestAnimationFrame(tick);
 
 /* ---- gallery ---- */
@@ -933,7 +993,8 @@ function card(c){
   const inn=document.createElement("div");inn.className="in";
   const ph=document.createElement("div");ph.className="ph";
   const im=new Image();im.dataset.src=c.photoURL;im.alt=c.name;ph.appendChild(im);
-  if(c.fx==="galaxy")addFx(ph,"gal");else if(c.fx==="void")addFx(ph,"void");else if(c.rarity==="BonULTRA")addFx(ph,"bh");
+  if(c.clock)ph.appendChild(clockSvg());
+  if(c.fx==="galaxy")addFx(ph,"gal");else if(c.fx==="void")addFx(ph,"void");else if(c.fx==="mrstar")addFx(ph,"star");else if(c.rarity==="BonULTRA")addFx(ph,"bh");
   const m=document.createElement("div");m.className="meta";
   const n=document.createElement("div");n.className="nm notranslate";n.textContent=c.name;
   const r=document.createElement("span");r.className="rb notranslate";r.textContent=c.rarity;
@@ -983,7 +1044,7 @@ const PHT=new Map();
 function detail(c){
   if(c&&c.id==="b-chef-bon"&&window.chefSay)window.chefSay();
   const b=$("det");b.innerHTML="";
-  const im=new Image();im.src=c.photoURL;im.alt=c.name;im.decoding="async";
+  const im=new Image();im.src=c.photoURL;im.alt=c.name;im.decoding="async";const imw=c.clock?clockWrap(im):im;
   const h=document.createElement("h3");h.textContent=c.name;h.className="notranslate";h.style.margin="14px 0 6px";
   const r=document.createElement("span");r.className="chip notranslate t-"+c.rarity.toLowerCase().replace(/\s+/g,"-");r.textContent=c.rarity;r.style.display="inline-block";
   const x=document.createElement("div");x.className="row";x.innerHTML='<button class="btn">Close</button>';x.firstChild.onclick=()=>hide("ovDet");
@@ -999,7 +1060,7 @@ function detail(c){
         else{dsc.textContent="Loading…";fetch(f).then(r=>r.ok?r.text():Promise.reject()).then(t=>{PHT.set(f,t);if(dsc._k===k){dsc.replaceChildren(rich(t));if(TL!=="en")trApply(dsc)}}).catch(()=>{if(dsc._k===k)dsc.textContent="Could not load the description. Check your connection."})}
       }else{dsc.replaceChildren(rich(p.d));if(TL!=="en")trApply(dsc)}};
     b.append(im,tabs,h,r,dsc);setPhase(1);
-  }else b.append(im,h,r,rich(c.description||""));
+  }else b.append(imw,h,r,rich(c.description||""));
   if(c.media)b.appendChild(mediaBox(c.media));b.append(x);
   if(c.rarity==="BonULTRA"&&c.fx!=="galaxy")im.style.background="#000";
   show("ovDet");armScare(c);if(TL!=="en")trApply(b);
