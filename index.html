@@ -156,7 +156,7 @@ footer p{margin-top:10px;color:var(--mut);font-size:14px}
 .cred li:first-child{border-top:0}
 .cred small{display:block;color:var(--mut);font-size:12px;margin-bottom:2px}
 .cred a{color:#8fc2ff;font-weight:700;text-decoration:underline;text-underline-offset:3px}
-.apkp{margin-top:14px;font-size:13px}.apkp a{color:#8fc2ff}
+.apkp{margin-top:14px;font-size:13px;white-space:normal;overflow-wrap:anywhere}.apkp a{color:#8fc2ff}
 #toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.06)),rgba(22,26,58,.86);color:#fff;border:1px solid rgba(255,255,255,.38);padding:12px 18px;border-radius:999px;font-weight:700;z-index:99;max-width:92vw;text-align:center;transition:opacity .3s;opacity:0;pointer-events:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 30px rgba(0,0,0,.4)}
 #toast.on{opacity:1}
 .offbar{position:fixed;top:calc(62px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:31;padding:8px 16px;border-radius:999px;font-size:13px;font-weight:700;max-width:92vw;text-align:center;border:1px solid rgba(255,255,255,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 8px 24px rgba(0,0,0,.35);background:linear-gradient(135deg,rgba(255,176,60,.9),rgba(220,110,40,.85));color:#2a1604}
@@ -239,6 +239,8 @@ svg.clk{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .card.mrstar .ph img{position:relative;z-index:1;mix-blend-mode:multiply}
 .card.mrstar .nm{background:linear-gradient(90deg,#ffd400,#6fb3ff,#ffd400);-webkit-background-clip:text;background-clip:text;color:transparent}
 .card.mrstar .rb{background:linear-gradient(90deg,#ffd400,#8cc4ff,#ffd400);color:#06122e}
+
+footer .flogo{display:inline-block;line-height:0}footer .flogo img{width:130px;height:auto;display:block}
 </style>
 </head>
 <body>
@@ -261,9 +263,8 @@ svg.clk{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 </main>
 
 <footer>
-  <a class="btn studiox" href="https://mrbonstudiox.github.io/MrBon.StudioX/" target="_blank" rel="noopener" aria-label="MrBon StudioX"><img alt="" src="mrbon-studiox-logo.png" decoding="async" width="46" height="46"><span class="notranslate">MrBon StudioX</span></a>
-  <div class="src notranslate">Source: WikipediaBon — <a href="https://wikipediabon.com/" target="_blank" rel="noopener">wikipediabon.com</a></div>
-  <p>Created by MrBon Studio X.</p>
+  <a class="flogo" href="https://mrbonstudiox.github.io/MrBon.StudioX/" target="_blank" rel="noopener" aria-label="MrBon StudioX"><img alt="MrBon StudioX" src="mrbon-icon.png" width="130" height="130" decoding="async"></a>
+  <p>Created by MrBon StudioX.</p>
   <p class="apkp" id="apkNote">📱 Recommended: install the Android app to read offline. <a href="WikipediaBon.apk" download>Download APK</a></p>
 </footer>
 
@@ -889,9 +890,9 @@ const pio=new IntersectionObserver(es=>es.forEach(x=>{if(!x.isIntersecting)retur
 /* ---- Clock Bon: real local time drawn on his face (HH:MM), updates every minute ---- */
 function nowHM(){const d=new Date();return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")}
 function clockSvg(){const NS="http://www.w3.org/2000/svg",v=document.createElementNS(NS,"svg");
-  v.setAttribute("viewBox","0 0 1659 2212");v.setAttribute("preserveAspectRatio","none");v.setAttribute("class","clk");v.setAttribute("aria-hidden","true");
+  v.setAttribute("viewBox","0 0 1500 2000");v.setAttribute("preserveAspectRatio","none");v.setAttribute("class","clk");v.setAttribute("aria-hidden","true");
   const t=document.createElementNS(NS,"text");
-  [["class","ckt"],["x","478"],["y","580"],["textLength","722"],["lengthAdjust","spacingAndGlyphs"],["fill","#ffff00"],["font-size","276"],["font-weight","900"],["font-family","'Segoe UI',Roboto,Arial,sans-serif"]].forEach(a=>t.setAttribute(a[0],a[1]));
+  [["class","ckt"],["x","460"],["y","497"],["textLength","586"],["lengthAdjust","spacingAndGlyphs"],["fill","#ffff00"],["font-size","222"],["font-weight","900"],["font-family","'Segoe UI',Roboto,Arial,sans-serif"]].forEach(a=>t.setAttribute(a[0],a[1]));
   t.textContent=nowHM();v.appendChild(t);return v}
 function clockWrap(im){const w=document.createElement("div");w.className="clkw";const v=clockSvg();v.style.opacity=0;v.style.transition="opacity .25s";
   const on=()=>{v.style.opacity=1};im.addEventListener("load",on);if(im.complete&&im.naturalWidth)on();w.append(im,v);return w}
@@ -914,9 +915,6 @@ function starShape(c,x,y,r,rot){c.beginPath();for(let i=0;i<10;i++){const a=rot+
 function starDraw(f,dt){
   const z=fit(f);if(!z)return;const{W,H,d}=z,c=f.c;f.t+=dt;
   const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,"#8fc8ff");g.addColorStop(1,"#fff1a6");c.fillStyle=g;c.fillRect(0,0,W,H);
-  const cx=W/2,cy=H*.46,R=Math.hypot(W,H),n=16,a0=f.t*.35;
-  for(let i=0;i<n;i++){const a=a0+i*6.2832/n,b=a+3.1416/n;c.beginPath();c.moveTo(cx,cy);c.lineTo(cx+Math.cos(a)*R,cy+Math.sin(a)*R);c.lineTo(cx+Math.cos(b)*R,cy+Math.sin(b)*R);c.closePath();c.fillStyle=i%2?"rgba(0,100,255,.3)":"rgba(255,200,0,.36)";c.fill()}
-  c.lineWidth=1.4*d;for(let i=0;i<28;i++){const a=-f.t*.7+i*6.2832/28;c.strokeStyle=i%2?"rgba(255,255,255,.75)":"rgba(0,80,255,.4)";c.beginPath();c.moveTo(cx+Math.cos(a)*W*.1,cy+Math.sin(a)*W*.1);c.lineTo(cx+Math.cos(a)*R,cy+Math.sin(a)*R);c.stroke()}
   for(const s of f.S){s.y+=s.v*dt;s.x+=s.vx*dt;if(s.y>1.12||s.x<-.15)Object.assign(s,newStar(false),{x:.2+Math.random()*1.1});
     const px=s.x*W,py=s.y*H,tx=-s.vx/s.v,L=H*.2,col=s.y2?"255,196,0":"20,100,255";
     const tg=c.createLinearGradient(px,py,px+tx*L,py-L);tg.addColorStop(0,"rgba("+col+",.8)");tg.addColorStop(1,"rgba("+col+",0)");
