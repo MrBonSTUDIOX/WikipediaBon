@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="theme-color" content="#0d1020">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>WikipediaBon</title>
 <meta name="description" content="The encyclopedia of MrBon characters">
@@ -241,6 +242,18 @@ svg.clk{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .card.mrstar .rb{background:linear-gradient(90deg,#ffd400,#8cc4ff,#ffd400);color:#06122e}
 
 footer .flogo{display:inline-block;line-height:0}footer .flogo img{width:130px;height:auto;display:block}
+
+.stats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:16px 0 4px;animation:fade 1s .9s both}
+.stats span{padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);font-size:14px;font-weight:600}
+.stats b{color:#ffd86b;font-size:16px}
+.fabs{position:fixed;right:14px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:45;display:flex;flex-direction:column;gap:10px}
+.fab{width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:linear-gradient(135deg,#5b6cff,#8a4dff);color:#fff;font-size:22px;line-height:1;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.45)}
+.fab:active{transform:scale(.92)}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.hero img.wm{animation:pop 1s ease both,floaty 6s ease-in-out 1s infinite;filter:drop-shadow(0 0 22px rgba(110,130,255,.45))}
+.card .in{-webkit-tap-highlight-color:transparent}.card:active{transform:scale(.97)}
+.det .row .btn{min-width:44px;justify-content:center}
+@media (prefers-reduced-motion:reduce){.hero img.wm{animation:none}}
 </style>
 </head>
 <body>
@@ -251,6 +264,7 @@ footer .flogo{display:inline-block;line-height:0}footer .flogo img{width:130px;h
   <img class="wm" alt="WikipediaBon" src="wikipediabon-logo.png" width="2000" height="302" fetchpriority="high" decoding="async">
   <div class="src notranslate">Source: WikipediaBon — <a href="https://wikipediabon.com/" target="_blank" rel="noopener">wikipediabon.com</a></div>
   <p>The encyclopedia of MrBon characters</p>
+  <div class="stats" id="stats"></div>
   <div class="down"><a href="#gallery" aria-label="Scroll to characters">↓</a></div>
 </section>
 
@@ -263,7 +277,7 @@ footer .flogo{display:inline-block;line-height:0}footer .flogo img{width:130px;h
 </main>
 
 <footer>
-  <a class="flogo" href="https://mrbonstudiox.github.io/MrBon.StudioX/" target="_blank" rel="noopener" aria-label="MrBon StudioX"><img alt="MrBon StudioX" src="mrbon-icon.png" width="130" height="130" decoding="async"></a>
+  <a class="flogo" href="https://mrbonstudiox.github.io/MrBon.StudioX/" target="_blank" rel="noopener" aria-label="MrBon StudioX"><img alt="MrBon StudioX" src="mrbon-studiox.png" width="130" height="130" decoding="async"></a>
   <p>Created by MrBon StudioX.</p>
   <p class="apkp" id="apkNote">📱 Recommended: install the Android app to read offline. <a href="WikipediaBon.apk" download>Download APK</a></p>
 </footer>
@@ -296,6 +310,7 @@ footer .flogo{display:inline-block;line-height:0}footer .flogo img{width:130px;h
 </div></div>
 <div id="scare" hidden></div>
 <div id="chefsay" class="notranslate" aria-hidden="true"><div class="cb"><span>Bon<br>appétit!</span></div><img src="chef-bon-hi.png" alt="" decoding="async" onerror="this.hidden=true"></div>
+<div class="fabs"><button class="fab" id="fabTop" type="button" aria-label="Back to top" hidden>↑</button><button class="fab" id="fabRand" type="button" aria-label="Random character" title="Random character">🎲</button></div>
 <div id="toast" role="status"></div>
 
 <script>
@@ -1046,6 +1061,9 @@ function detail(c){
   const h=document.createElement("h3");h.textContent=c.name;h.className="notranslate";h.style.margin="14px 0 6px";
   const r=document.createElement("span");r.className="chip notranslate t-"+c.rarity.toLowerCase().replace(/\s+/g,"-");r.textContent=c.rarity;r.style.display="inline-block";
   const x=document.createElement("div");x.className="row";x.innerHTML='<button class="btn">Close</button>';x.firstChild.onclick=()=>hide("ovDet");
+  {const pool=LIST.includes(c)?LIST:ALL,ix=pool.indexOf(c),mk=(t,l,fn)=>{const q=document.createElement("button");q.type="button";q.className="btn";q.textContent=t;q.setAttribute("aria-label",l);q.onclick=fn;return q};
+   const sh=mk("Share","Share link",()=>shareChar(c));sh.classList.add("notranslate");
+   if(pool.length>1&&ix>=0)x.prepend(mk("‹","Previous character",()=>detail(pool[(ix-1+pool.length)%pool.length])),sh,mk("›","Next character",()=>detail(pool[(ix+1)%pool.length])));else x.prepend(sh)}
   let dsc=null;
   if(c.phases){
     const tabs=document.createElement("div");tabs.className="phs notranslate";dsc=document.createElement("div");
@@ -1061,7 +1079,7 @@ function detail(c){
   }else b.append(imw,h,r,rich(c.description||""));
   if(c.media)b.appendChild(mediaBox(c.media));b.append(x);
   if(c.rarity==="BonULTRA"&&c.fx!=="galaxy")im.style.background="#000";
-  show("ovDet");armScare(c);if(TL!=="en")trApply(b);
+  show("ovDet");b.scrollTop=0;if(b.parentElement)b.parentElement.scrollTop=0;try{history.replaceState(null,"","#"+c.id.replace(/^b-/,""))}catch(e){}armScare(c);if(TL!=="en")trApply(b);
 }
 
 /* ---- MrBon Virus: sounds with waveform ---- */
@@ -1199,6 +1217,23 @@ if(/; wv\)/.test(navigator.userAgent)||matchMedia("(display-mode: standalone)").
   window.chefSay=function(){if(!el||busy||Date.now()-last()<CD)return;busy=true;mark();
     setTimeout(()=>{el.classList.add("on");el.setAttribute("aria-hidden","false");
       setTimeout(()=>{el.classList.remove("on");el.setAttribute("aria-hidden","true");setTimeout(()=>{busy=false},1000)},4800)},350)}})();
+/* ---- extras: stats, random character, back-to-top, share links (#chef-bon opens his page) ---- */
+function shareChar(c){const u=location.origin+location.pathname+"#"+c.id.replace(/^b-/,"");
+  if(navigator.share)navigator.share({title:c.name+" — WikipediaBon",text:"MrBon character: "+c.name,url:u}).catch(()=>{});
+  else if(navigator.clipboard)navigator.clipboard.writeText(u).then(()=>toast("Link copied"),()=>toast(u));else toast(u)}
+(function(){
+  const st=$("stats");if(st){const n=ALL.length,r=new Set(ALL.map(c=>c.rarity)).size;
+    st.innerHTML='<span><b class="notranslate" data-n="'+n+'">0</b> characters</span><span><b class="notranslate" data-n="'+r+'">0</b> rarities</span><span>Free app &amp; offline mode</span>';
+    const bs=st.querySelectorAll("b[data-n]"),t0=performance.now();
+    (function step(t){const k=Math.min(1,(t-t0)/900);bs.forEach(b=>b.textContent=Math.round(b.dataset.n*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(step)})(t0)}
+  const top=$("fabTop");let tk=false;
+  addEventListener("scroll",()=>{if(tk)return;tk=true;requestAnimationFrame(()=>{tk=false;top.hidden=scrollY<700})},{passive:true});
+  top.onclick=()=>scrollTo({top:0,behavior:"smooth"});
+  $("fabRand").onclick=()=>{const c=ALL[Math.floor(Math.random()*ALL.length)];detail(c)};
+  const openHash=()=>{const h=decodeURIComponent(location.hash.slice(1));if(!h)return;const c=ALL.find(c=>c.id===h||c.id==="b-"+h);if(c&&$("ovDet").hidden)detail(c)};
+  addEventListener("hashchange",openHash);setTimeout(openHash,400);
+  new MutationObserver(()=>{if($("ovDet").hidden&&location.hash&&ALL.some(c=>c.id.replace(/^b-/,"")===location.hash.slice(1))){try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}}}).observe($("ovDet"),{attributes:true,attributeFilter:["hidden"]});
+})();
 if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol))addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 
 /* ---- start ---- */
